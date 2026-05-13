@@ -1,0 +1,922 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KroffGroup — Кровельные работы</title>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%230f0f0f'/%3E%3Cpolygon points='16,5 29,16 26,16 26,27 6,27 6,16 3,16' fill='%23f07020'/%3E%3Crect x='13' y='18' width='6' height='9' fill='%230f0f0f'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,300&display=swap" rel="stylesheet">
+<style>
+:root {
+  --black:      #0f0f0f;
+  --graphite:   #1c1c1c;
+  --anthracite: #252525;
+  --steel:      #3a3f47;
+  --steel-lt:   #6b7684;
+  --orange:     #f07020;
+  --amber:      #f5a623;
+  --white:      #f0ede8;
+  --white-dim:  rgba(240,237,232,0.6);
+  --font-d:     'Bebas Neue', sans-serif;
+  --font-b:     'DM Sans', sans-serif;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body { font-family: var(--font-b); background: var(--black); color: var(--white); overflow-x: hidden; }
+
+/* ── HEADER ── */
+header {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  background: rgba(15,15,15,.95); backdrop-filter: blur(12px);
+  border-bottom: 1px solid rgba(240,112,32,.15);
+  transition: border-color .3s;
+}
+header.scrolled { border-bottom-color: rgba(240,112,32,.4); }
+
+nav {
+  max-width: 1400px; margin: 0 auto; padding: 0 2rem;
+  display: flex; align-items: center; justify-content: space-between; height: 68px;
+}
+
+.logo { font-family: var(--font-d); font-size: 1.8rem; letter-spacing: .04em; color: var(--white); text-decoration: none; }
+.logo span { color: var(--orange); }
+
+.nav-links { display: flex; gap: 1.75rem; list-style: none; }
+.nav-links a {
+  color: var(--white-dim); text-decoration: none;
+  font-size: .78rem; font-weight: 500; letter-spacing: .1em; text-transform: uppercase;
+  transition: color .2s; position: relative;
+}
+.nav-links a::after {
+  content: ''; position: absolute; bottom: -4px; left: 0;
+  width: 0; height: 2px; background: var(--orange); transition: width .3s;
+}
+.nav-links a:hover { color: var(--white); }
+.nav-links a:hover::after { width: 100%; }
+.nav-cta {
+  background: var(--orange) !important; color: var(--black) !important;
+  padding: .45rem 1.1rem; border-radius: 2px; font-weight: 600 !important;
+  transition: background .2s !important;
+}
+.nav-cta:hover { background: var(--amber) !important; }
+.nav-cta::after { display: none !important; }
+
+.hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; padding: 8px; background: none; border: none; }
+.hamburger span { display: block; width: 24px; height: 2px; background: var(--white); transition: all .3s; }
+.hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+.hamburger.open span:nth-child(2) { opacity: 0; }
+.hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+.mobile-nav {
+  display: none; position: fixed; top: 68px; left: 0; right: 0; bottom: 0;
+  background: rgba(15,15,15,.98); z-index: 99;
+  flex-direction: column; align-items: center; justify-content: center; gap: 2rem;
+}
+.mobile-nav.open { display: flex; }
+.mobile-nav a { font-family: var(--font-d); font-size: 2.2rem; letter-spacing: .06em; color: var(--white); text-decoration: none; transition: color .2s; }
+.mobile-nav a:hover { color: var(--orange); }
+
+/* ── HERO ── */
+#hero {
+  min-height: 100vh; position: relative; display: flex; align-items: center;
+  overflow: hidden;
+  background:
+    repeating-linear-gradient(45deg, transparent, transparent 2px, rgba(255,255,255,.012) 2px, rgba(255,255,255,.012) 4px),
+    linear-gradient(135deg, #0a0a0a 0%, #181818 60%, #0d0d0d 100%);
+}
+
+.hero-slash {
+  position: absolute; top: 0; right: 0; width: 55%; height: 100%;
+  background: linear-gradient(120deg, transparent 25%, rgba(240,112,32,.055) 100%);
+  clip-path: polygon(20% 0, 100% 0, 100% 100%, 0 100%);
+  will-change: transform;
+}
+.hero-line {
+  position: absolute; top: 0; right: 42%; width: 1px; height: 100%;
+  background: linear-gradient(to bottom, transparent, rgba(240,112,32,.5) 35%, rgba(240,112,32,.5) 65%, transparent);
+  will-change: transform;
+}
+.hero-content { will-change: transform; }
+
+.hero-content {
+  position: relative; z-index: 2;
+  max-width: 1400px; margin: 0 auto; padding: 0 2rem; padding-top: 68px;
+  width: 100%;
+}
+
+.hero-badge {
+  display: inline-flex; align-items: center; gap: .5rem;
+  background: rgba(240,112,32,.08); border: 1px solid rgba(240,112,32,.3);
+  padding: .35rem 1rem; border-radius: 2px; margin-bottom: 1.5rem;
+  font-size: .7rem; letter-spacing: .18em; text-transform: uppercase; color: var(--orange);
+}
+.hero-badge::before {
+  content: ''; width: 6px; height: 6px; background: var(--orange); border-radius: 50%;
+  animation: blink 2s infinite;
+}
+@keyframes blink { 0%,100% { opacity:1; } 50% { opacity:.3; } }
+
+.hero-h1 {
+  font-family: var(--font-d);
+  font-size: clamp(4.5rem, 11vw, 10rem);
+  line-height: .88; letter-spacing: .02em; margin-bottom: 1.25rem;
+}
+.hero-h1 em { font-style: normal; color: var(--orange); display: block; }
+
+.hero-sub {
+  font-size: clamp(.95rem, 1.8vw, 1.2rem); color: var(--white-dim);
+  line-height: 1.65; font-weight: 300; max-width: 460px; margin-bottom: 2.5rem;
+}
+
+.hero-stats { display: flex; gap: 3rem; margin-bottom: 3rem; flex-wrap: wrap; }
+.stat-num { font-family: var(--font-d); font-size: 2.8rem; color: var(--orange); line-height: 1; }
+.stat-lbl { font-size: .7rem; color: var(--white-dim); text-transform: uppercase; letter-spacing: .1em; margin-top: .2rem; }
+
+.hero-btns { display: flex; gap: 1rem; flex-wrap: wrap; }
+
+/* ── BUTTONS ── */
+.btn-p {
+  background: var(--orange); color: var(--black);
+  padding: .9rem 2.4rem; font-family: var(--font-d); font-size: 1.05rem; letter-spacing: .1em;
+  text-decoration: none; border-radius: 2px; border: none; cursor: pointer; display: inline-block;
+  transition: background .2s, transform .2s, box-shadow .2s;
+}
+.btn-p:hover { background: var(--amber); transform: translateY(-2px); box-shadow: 0 8px 28px rgba(240,112,32,.4); }
+
+.btn-o {
+  border: 1px solid rgba(240,237,232,.25); color: var(--white);
+  padding: .9rem 2.4rem; font-family: var(--font-d); font-size: 1.05rem; letter-spacing: .1em;
+  text-decoration: none; border-radius: 2px; display: inline-block; transition: border-color .2s, color .2s;
+}
+.btn-o:hover { border-color: var(--orange); color: var(--orange); }
+
+/* ── SECTIONS ── */
+section { padding: 6rem 0; }
+.container { max-width: 1400px; margin: 0 auto; padding: 0 2rem; }
+
+.sec-label {
+  font-size: .65rem; letter-spacing: .22em; text-transform: uppercase; color: var(--orange);
+  display: flex; align-items: center; gap: .75rem; margin-bottom: .6rem;
+}
+.sec-label::before { content: ''; width: 28px; height: 1px; background: var(--orange); }
+
+.sec-title {
+  font-family: var(--font-d); font-size: clamp(2.4rem, 5vw, 4rem);
+  letter-spacing: .02em; line-height: .95; margin-bottom: 1rem;
+}
+.sec-desc { color: var(--white-dim); font-size: .95rem; line-height: 1.7; font-weight: 300; max-width: 560px; }
+
+/* ── WORKS ── */
+#works {
+  background: var(--graphite);
+  background-image: repeating-linear-gradient(45deg, transparent, transparent 2px, rgba(255,255,255,.01) 2px, rgba(255,255,255,.01) 4px);
+}
+
+.works-head { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 2.5rem; flex-wrap: wrap; gap: 1.5rem; }
+
+.works-grid {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  gap: .875rem;
+}
+.wc { background: var(--anthracite); border-radius: 2px; overflow: hidden; cursor: pointer; transition: transform .3s; }
+.wc:hover { transform: translateY(-5px); }
+.wc:hover .wc-ov { opacity: 1; }
+.wc:nth-child(1) { grid-column: span 7; }
+.wc:nth-child(2) { grid-column: span 5; }
+.wc:nth-child(3) { grid-column: span 4; }
+.wc:nth-child(4) { grid-column: span 4; }
+.wc:nth-child(5) { grid-column: span 4; }
+
+.wc-img { position: relative; overflow: hidden; }
+.wc:nth-child(1) .wc-img,
+.wc:nth-child(2) .wc-img { height: 370px; }
+.wc:nth-child(3) .wc-img,
+.wc:nth-child(4) .wc-img,
+.wc:nth-child(5) .wc-img { height: 260px; }
+
+.wc:nth-child(1) .wc-img { background: linear-gradient(135deg, #1e2535 0%, #141820 100%); }
+.wc:nth-child(2) .wc-img { background: linear-gradient(135deg, #1e2820 0%, #141a14 100%); }
+.wc:nth-child(3) .wc-img { background: linear-gradient(135deg, #241c1c 0%, #1a1214 100%); }
+.wc:nth-child(4) .wc-img { background: linear-gradient(135deg, #1c2024 0%, #141618 100%); }
+.wc:nth-child(5) .wc-img { background: linear-gradient(135deg, #201c24 0%, #161214 100%); }
+
+.wc-img svg { position: absolute; inset: 0; width: 100%; height: 100%; opacity: .18; }
+.wc-ov {
+  position: absolute; inset: 0; background: rgba(240,112,32,.88);
+  display: flex; align-items: center; justify-content: center;
+  opacity: 0; transition: opacity .3s;
+}
+.wc-ov span { font-family: var(--font-d); font-size: 1.25rem; letter-spacing: .1em; color: var(--black); }
+
+.wc-info { padding: 1.1rem 1.25rem; }
+.wc-tag { font-size: .6rem; letter-spacing: .16em; text-transform: uppercase; color: var(--orange); margin-bottom: .35rem; }
+.wc-title { font-size: .9rem; font-weight: 500; }
+.wc-meta { font-size: .75rem; color: var(--white-dim); margin-top: .25rem; }
+
+/* ── PRODUCTS ── */
+#products { background: var(--black); }
+
+.prod-head { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 2.5rem; flex-wrap: wrap; gap: 1.5rem; }
+
+.prod-grid {
+  display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 1px; background: rgba(255,255,255,.06); border: 1px solid rgba(255,255,255,.06);
+}
+.pc {
+  background: var(--black); padding: 2rem; transition: background .25s; position: relative; overflow: hidden;
+}
+.pc::before {
+  content: ''; position: absolute; top: 0; left: 0; width: 3px; height: 0;
+  background: var(--orange); transition: height .3s;
+}
+.pc:hover { background: var(--graphite); }
+.pc:hover::before { height: 100%; }
+
+.pc-icon { width: 44px; height: 44px; margin-bottom: 1.1rem; color: var(--orange); }
+.pc-name { font-family: var(--font-d); font-size: 1.3rem; letter-spacing: .03em; margin-bottom: .6rem; }
+.pc-desc { font-size: .82rem; color: var(--white-dim); line-height: 1.65; font-weight: 300; }
+.pc-price { margin-top: .9rem; font-size: .72rem; color: var(--orange); letter-spacing: .1em; text-transform: uppercase; }
+
+/* ── INSTALLATION ── */
+#installation {
+  background: var(--anthracite);
+  background-image: repeating-linear-gradient(-45deg, transparent, transparent 3px, rgba(255,255,255,.008) 3px, rgba(255,255,255,.008) 6px);
+}
+.inst-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 5rem; align-items: start; }
+
+.steps { display: flex; flex-direction: column; margin-top: 2rem; }
+.step { display: flex; gap: 1.5rem; padding: 1.5rem 0; border-bottom: 1px solid rgba(255,255,255,.05); }
+.step:last-child { border-bottom: none; }
+.step-n { font-family: var(--font-d); font-size: 3rem; color: rgba(240,112,32,.2); line-height: 1; min-width: 56px; transition: color .3s; }
+.step:hover .step-n { color: var(--orange); }
+.step h4 { font-size: .95rem; font-weight: 600; margin-bottom: .35rem; }
+.step p { font-size: .82rem; color: var(--white-dim); line-height: 1.6; font-weight: 300; }
+
+.advs { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-top: 2.5rem; }
+.adv {
+  background: rgba(240,112,32,.05); border: 1px solid rgba(240,112,32,.1);
+  padding: 1.25rem; border-radius: 2px; transition: background .2s;
+}
+.adv:hover { background: rgba(240,112,32,.1); }
+.adv svg { width: 22px; height: 22px; color: var(--orange); margin-bottom: .5rem; }
+.adv h5 { font-size: .88rem; font-weight: 600; margin-bottom: .25rem; }
+.adv p { font-size: .75rem; color: var(--white-dim); line-height: 1.5; }
+
+/* ── FLASHINGS ── */
+#flashings { background: var(--black); }
+.flash-grid { display: grid; grid-template-columns: 1fr 1.6fr; gap: 5rem; align-items: start; }
+.flash-feats { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-top: 1rem; }
+
+.feat { display: flex; flex-direction: column; gap: .4rem; }
+.feat-icon {
+  width: 38px; height: 38px; background: rgba(240,112,32,.1); border-radius: 2px;
+  display: flex; align-items: center; justify-content: center; color: var(--orange); margin-bottom: .2rem;
+}
+.feat-icon svg { width: 18px; height: 18px; }
+.feat h5 { font-size: .88rem; font-weight: 600; }
+.feat p { font-size: .78rem; color: var(--white-dim); line-height: 1.55; font-weight: 300; }
+
+/* ── SCAFFOLDING ── */
+#scaffolding {
+  background: var(--graphite);
+  background-image: repeating-linear-gradient(45deg, transparent, transparent 2px, rgba(255,255,255,.01) 2px, rgba(255,255,255,.01) 4px);
+}
+.scaff-grid { display: grid; grid-template-columns: 1.4fr 1fr; gap: 5rem; align-items: start; }
+
+.perks { display: flex; flex-direction: column; gap: .7rem; margin-top: 2rem; }
+.perk { display: flex; align-items: center; gap: .75rem; font-size: .88rem; color: var(--white-dim); }
+.perk::before { content: ''; width: 20px; height: 2px; background: var(--orange); flex-shrink: 0; }
+
+.price-cards { display: flex; flex-direction: column; gap: .75rem; margin-top: 1rem; }
+.prc {
+  background: var(--anthracite); padding: 1.25rem 1.5rem; border-radius: 2px;
+  border-left: 3px solid var(--orange); display: flex; justify-content: space-between; align-items: center;
+  transition: background .2s;
+}
+.prc:hover { background: var(--steel); }
+.prc-name { font-size: .88rem; font-weight: 500; margin-bottom: .2rem; }
+.prc-detail { font-size: .72rem; color: var(--white-dim); }
+.prc-amt { font-family: var(--font-d); font-size: 1.5rem; color: var(--orange); text-align: right; white-space: nowrap; }
+.prc-unit { font-size: .6rem; color: var(--white-dim); letter-spacing: .1em; text-transform: uppercase; display: block; text-align: right; }
+
+/* ── CONTACTS ── */
+#contacts { background: var(--black); }
+.contacts-grid { display: grid; grid-template-columns: 1fr 1.6fr; gap: 5rem; align-items: start; margin-top: 3rem; }
+
+.ci-list { display: flex; flex-direction: column; gap: 2rem; }
+.ci-lbl { font-size: .6rem; letter-spacing: .2em; text-transform: uppercase; color: var(--orange); margin-bottom: .3rem; }
+.ci-val { font-size: 1.15rem; font-weight: 500; }
+.ci-val a { color: var(--white); text-decoration: none; transition: color .2s; }
+.ci-val a:hover { color: var(--orange); }
+
+.cform { display: flex; flex-direction: column; gap: 1rem; }
+.form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+.fg { display: flex; flex-direction: column; gap: .35rem; }
+.fg label { font-size: .65rem; letter-spacing: .14em; text-transform: uppercase; color: var(--white-dim); }
+.fg input, .fg textarea, .fg select {
+  background: var(--graphite); border: 1px solid rgba(255,255,255,.08); color: var(--white);
+  padding: .8rem 1rem; border-radius: 2px; font-family: var(--font-b); font-size: .88rem;
+  outline: none; transition: border-color .2s; width: 100%;
+  -webkit-appearance: none; appearance: none;
+}
+.fg input:focus, .fg textarea:focus, .fg select:focus { border-color: var(--orange); }
+.fg textarea { resize: vertical; min-height: 110px; }
+.fg select {
+  padding-right: 2.5rem;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23f07020' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 1rem center;
+  cursor: pointer;
+}
+.fg select option { background: var(--graphite); }
+
+/* ── FOOTER ── */
+footer { background: var(--graphite); border-top: 1px solid rgba(255,255,255,.05); padding: 3rem 0 1.75rem; }
+.foot-top {
+  max-width: 1400px; margin: 0 auto; padding: 0 2rem;
+  display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 3rem; margin-bottom: 2.5rem;
+}
+.foot-brand p { font-size: .82rem; color: var(--white-dim); line-height: 1.65; font-weight: 300; max-width: 300px; margin-top: 1rem; }
+.foot-col h6 { font-size: .62rem; letter-spacing: .18em; text-transform: uppercase; color: var(--orange); margin-bottom: .9rem; }
+.foot-col ul { list-style: none; display: flex; flex-direction: column; gap: .45rem; }
+.foot-col ul a { color: var(--white-dim); text-decoration: none; font-size: .82rem; transition: color .2s; }
+.foot-col ul a:hover { color: var(--white); }
+
+.foot-bot {
+  max-width: 1400px; margin: 0 auto; padding: 1.5rem 2rem 0;
+  border-top: 1px solid rgba(255,255,255,.05);
+  display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: .5rem;
+}
+.foot-bot p { font-size: .75rem; color: var(--steel-lt); }
+
+/* ── REVEAL ── */
+.rv { opacity: 0; transform: translateY(28px); transition: opacity .65s ease, transform .65s ease; }
+.rv.in { opacity: 1; transform: none; }
+.d1 { transition-delay: .1s; }
+.d2 { transition-delay: .2s; }
+.d3 { transition-delay: .3s; }
+.d4 { transition-delay: .4s; }
+
+/* ── RESPONSIVE ── */
+@media (max-width: 1024px) {
+  .works-grid { grid-template-columns: 1fr 1fr; }
+  .wc:nth-child(n) { grid-column: span 1; }
+  .wc:nth-child(1) { grid-column: span 2; }
+  .inst-grid, .flash-grid, .scaff-grid, .contacts-grid { grid-template-columns: 1fr; gap: 3rem; }
+  .foot-top { grid-template-columns: 1fr 1fr; }
+}
+
+@media (max-width: 768px) {
+  .nav-links { display: none; }
+  .hamburger { display: flex; }
+  .works-grid { grid-template-columns: 1fr; }
+  .wc:nth-child(n) { grid-column: span 1; }
+  .wc:nth-child(1) .wc-img, .wc:nth-child(2) .wc-img { height: 240px; }
+  .form-row { grid-template-columns: 1fr; }
+  .foot-top { grid-template-columns: 1fr; }
+  .advs { grid-template-columns: 1fr; }
+  .flash-feats { grid-template-columns: 1fr; }
+  .hero-stats { gap: 1.5rem; }
+  section { padding: 4rem 0; }
+}
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header id="hdr">
+  <nav>
+    <a href="#hero" class="logo">KROFF<span>GROUP</span></a>
+    <ul class="nav-links">
+      <li><a href="#works">Наши работы</a></li>
+      <li><a href="#products">Товары</a></li>
+      <li><a href="#installation">Монтаж</a></li>
+      <li><a href="#flashings">Доборы</a></li>
+      <li><a href="#scaffolding">Леса</a></li>
+      <li><a href="#contacts" class="nav-cta">Связаться</a></li>
+    </ul>
+    <button class="hamburger" id="hbg" aria-label="Меню"><span></span><span></span><span></span></button>
+  </nav>
+</header>
+
+<nav class="mobile-nav" id="mob">
+  <a href="#works" class="ml">Наши работы</a>
+  <a href="#products" class="ml">Товары</a>
+  <a href="#installation" class="ml">Монтаж кровли</a>
+  <a href="#flashings" class="ml">Доборы</a>
+  <a href="#scaffolding" class="ml">Аренда лесов</a>
+  <a href="#contacts" class="ml">Контакты</a>
+</nav>
+
+<!-- ══════════ HERO ══════════ -->
+<section id="hero">
+  <div class="hero-slash"></div>
+  <div class="hero-line"></div>
+  <div class="hero-content">
+    <div class="hero-badge">Более 20 лет на рынке</div>
+    <h1 class="hero-h1">KROFF<em>GROUP</em></h1>
+    <p class="hero-sub">Кровельные работы любой сложности — жилые, коммерческие и промышленные объекты. Гарантия до&nbsp;3&nbsp;лет.</p>
+    <div class="hero-stats">
+      <div><div class="stat-num">20+</div><div class="stat-lbl">Лет опыта</div></div>
+      <div><div class="stat-num">3</div><div class="stat-lbl">Года гарантии</div></div>
+      <div><div class="stat-num">500+</div><div class="stat-lbl">Объектов</div></div>
+    </div>
+    <div class="hero-btns">
+      <a href="#contacts" class="btn-p">Получить расчёт</a>
+      <a href="#works" class="btn-o">Наши работы</a>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════ WORKS ══════════ -->
+<section id="works">
+  <div class="container">
+    <div class="works-head">
+      <div>
+        <div class="sec-label rv">Портфолио</div>
+        <h2 class="sec-title rv d1">Наши работы</h2>
+        <p class="sec-desc rv d2">Реализованные проекты в жилом, коммерческом и промышленном секторе</p>
+      </div>
+    </div>
+    <div class="works-grid">
+
+      <div class="wc rv">
+        <div class="wc-img">
+          <svg viewBox="0 0 800 400" xmlns="http://www.w3.org/2000/svg">
+            <polygon points="400,30 760,360 40,360" fill="none" stroke="rgba(240,112,32,.6)" stroke-width="2"/>
+            <line x1="40" y1="360" x2="760" y2="360" stroke="rgba(255,255,255,.3)" stroke-width="1.5"/>
+            <line x1="400" y1="30" x2="400" y2="360" stroke="rgba(240,112,32,.25)" stroke-width="1" stroke-dasharray="6,4"/>
+            <rect x="160" y="360" width="480" height="20" fill="rgba(240,112,32,.08)"/>
+          </svg>
+          <div class="wc-ov"><span>Жилой комплекс</span></div>
+        </div>
+        <div class="wc-info">
+          <div class="wc-tag">Жилое строительство</div>
+          <div class="wc-title">Монтаж металлочерепицы — ЖК «Северный»</div>
+          <div class="wc-meta">3 400 м² · Саранск · 2025</div>
+        </div>
+      </div>
+
+      <div class="wc rv d1">
+        <div class="wc-img">
+          <svg viewBox="0 0 600 400" xmlns="http://www.w3.org/2000/svg">
+            <rect x="30" y="80" width="540" height="240" fill="none" stroke="rgba(240,112,32,.5)" stroke-width="2"/>
+            <line x1="30" y1="130" x2="570" y2="130" stroke="rgba(255,255,255,.2)" stroke-width="1"/>
+            <line x1="30" y1="180" x2="570" y2="180" stroke="rgba(255,255,255,.2)" stroke-width="1"/>
+            <line x1="30" y1="230" x2="570" y2="230" stroke="rgba(255,255,255,.2)" stroke-width="1"/>
+            <rect x="30" y="80" width="540" height="50" fill="rgba(240,112,32,.06)"/>
+          </svg>
+          <div class="wc-ov"><span>ТЦ «Меркурий»</span></div>
+        </div>
+        <div class="wc-info">
+          <div class="wc-tag">Коммерция</div>
+          <div class="wc-title">Плоская кровля ТЦ «Меркурий»</div>
+          <div class="wc-meta">5 200 м² · Саранск · 2025</div>
+        </div>
+      </div>
+
+      <div class="wc rv d2">
+        <div class="wc-img">
+          <svg viewBox="0 0 500 300" xmlns="http://www.w3.org/2000/svg">
+            <polygon points="250,25 475,255 25,255" fill="none" stroke="rgba(240,112,32,.5)" stroke-width="2"/>
+            <polygon points="250,80 415,255 85,255" fill="none" stroke="rgba(255,255,255,.12)" stroke-width="1"/>
+          </svg>
+          <div class="wc-ov"><span>Коттедж</span></div>
+        </div>
+        <div class="wc-info">
+          <div class="wc-tag">Частный дом</div>
+          <div class="wc-title">Кровля коттеджа из профнастила</div>
+          <div class="wc-meta">340 м² · Барнаул · 2023</div>
+        </div>
+      </div>
+
+      <div class="wc rv d3">
+        <div class="wc-img">
+          <svg viewBox="0 0 500 300" xmlns="http://www.w3.org/2000/svg">
+            <rect x="20" y="60" width="460" height="180" fill="none" stroke="rgba(240,112,32,.4)" stroke-width="1.5"/>
+            <rect x="60" y="90" width="380" height="120" fill="none" stroke="rgba(255,255,255,.15)" stroke-width="1"/>
+            <line x1="20" y1="60" x2="480" y2="60" stroke="rgba(240,112,32,.3)" stroke-width="2"/>
+          </svg>
+          <div class="wc-ov"><span>Складской комплекс</span></div>
+        </div>
+        <div class="wc-info">
+          <div class="wc-tag">Промышленность</div>
+          <div class="wc-title">Кровля складского комплекса</div>
+          <div class="wc-meta">8 000 м² · Саранск · 2025</div>
+        </div>
+      </div>
+
+      <div class="wc rv d4">
+        <div class="wc-img">
+          <svg viewBox="0 0 500 300" xmlns="http://www.w3.org/2000/svg">
+            <polygon points="250,25 460,240 40,240" fill="none" stroke="rgba(240,112,32,.45)" stroke-width="1.5"/>
+            <polygon points="160,240 160,280 340,280 340,240" fill="none" stroke="rgba(255,255,255,.2)" stroke-width="1"/>
+            <polygon points="250,70 410,240 90,240" fill="none" stroke="rgba(255,255,255,.08)" stroke-width="1"/>
+          </svg>
+          <div class="wc-ov"><span>Таунхаусы</span></div>
+        </div>
+        <div class="wc-info">
+          <div class="wc-tag">Жилое строительство</div>
+          <div class="wc-title">Кровля таунхаусов «Зелёный квартал»</div>
+          <div class="wc-meta">1 800 м² · Кемерово · 2023</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ══════════ PRODUCTS ══════════ -->
+<section id="products">
+  <div class="container">
+    <div class="prod-head">
+      <div>
+        <div class="sec-label rv">Каталог</div>
+        <h2 class="sec-title rv d1">Товары</h2>
+        <p class="sec-desc rv d2">Кровельные материалы и доборные элементы от ведущих производителей</p>
+      </div>
+    </div>
+    <div class="prod-grid">
+
+      <div class="pc rv">
+        <svg class="pc-icon" viewBox="0 0 48 48" fill="none"><path d="M6 38L24 10L42 38H6Z" stroke="currentColor" stroke-width="2"/><line x1="6" y1="38" x2="42" y2="38" stroke="currentColor" stroke-width="2"/><line x1="14" y1="38" x2="24" y2="22" stroke="currentColor" stroke-width="1" opacity=".4"/></svg>
+        <div class="pc-name">Металлочерепица</div>
+        <div class="pc-desc">Монтерей, Супермонтерей, Каскад. Толщина стали 0.45–0.7 мм. Полиэстер, Пурал, PVDF-покрытия в 50+ цветах RAL.</div>
+        <div class="pc-price">от 380 ₽/м²</div>
+      </div>
+
+      <div class="pc rv d1">
+        <svg class="pc-icon" viewBox="0 0 48 48" fill="none"><rect x="4" y="14" width="40" height="22" stroke="currentColor" stroke-width="2"/><line x1="4" y1="20" x2="44" y2="20" stroke="currentColor" stroke-width="1.5"/><line x1="4" y1="26" x2="44" y2="26" stroke="currentColor" stroke-width="1.5"/><line x1="4" y1="32" x2="44" y2="32" stroke="currentColor" stroke-width="1.5"/></svg>
+        <div class="pc-name">Профнастил</div>
+        <div class="pc-desc">С-8, С-20, НС-35, Н-60, Н-75. Для кровли, стен и перекрытий. Оцинкованный и с полимерным покрытием.</div>
+        <div class="pc-price">от 240 ₽/м²</div>
+      </div>
+
+      <div class="pc rv d2">
+        <svg class="pc-icon" viewBox="0 0 48 48" fill="none"><path d="M8 38L24 8L40 38" stroke="currentColor" stroke-width="2"/><path d="M16 38L24 24L32 38" stroke="currentColor" stroke-width="1.5" opacity=".4"/></svg>
+        <div class="pc-name">Мягкая кровля</div>
+        <div class="pc-desc">Битумная черепица Shinglas, Tegola, Katepal. Рулонные материалы: Техноэласт, Унифлекс, Линокром.</div>
+        <div class="pc-price">от 420 ₽/м²</div>
+      </div>
+
+      <div class="pc rv d3">
+        <svg class="pc-icon" viewBox="0 0 48 48" fill="none"><rect x="6" y="6" width="36" height="36" stroke="currentColor" stroke-width="2"/><line x1="6" y1="18" x2="42" y2="18" stroke="currentColor" stroke-width="1.5"/><line x1="6" y1="30" x2="42" y2="30" stroke="currentColor" stroke-width="1.5"/><line x1="18" y1="6" x2="18" y2="42" stroke="currentColor" stroke-width="1.5"/><line x1="30" y1="6" x2="30" y2="42" stroke="currentColor" stroke-width="1.5"/></svg>
+        <div class="pc-name">Доборные элементы</div>
+        <div class="pc-desc">Коньки, ендовы, карнизные и ветровые планки, примыкания. Изготовление под заказ любого цвета RAL.</div>
+        <div class="pc-price">от 150 ₽/п.м</div>
+      </div>
+
+      <div class="pc rv">
+        <svg class="pc-icon" viewBox="0 0 48 48" fill="none"><path d="M12 36C12 36 12 24 24 24C36 24 36 36 36 36" stroke="currentColor" stroke-width="2"/><line x1="24" y1="8" x2="24" y2="24" stroke="currentColor" stroke-width="2"/><circle cx="24" cy="8" r="3" stroke="currentColor" stroke-width="1.5"/><line x1="12" y1="36" x2="36" y2="36" stroke="currentColor" stroke-width="2"/><line x1="12" y1="42" x2="12" y2="36" stroke="currentColor" stroke-width="2"/><line x1="36" y1="42" x2="36" y2="36" stroke="currentColor" stroke-width="2"/></svg>
+        <div class="pc-name">Водосточные системы</div>
+        <div class="pc-desc">Металлические и пластиковые водостоки Docke, Grand Line. Диаметры 90–150 мм.</div>
+        <div class="pc-price">от 180 ₽/п.м</div>
+      </div>
+
+      <div class="pc rv d1">
+        <svg class="pc-icon" viewBox="0 0 48 48" fill="none"><path d="M8 40V18L24 8L40 18V40H8Z" stroke="currentColor" stroke-width="2"/><path d="M16 40V30H32V40" stroke="currentColor" stroke-width="1.5"/><line x1="8" y1="24" x2="40" y2="24" stroke="currentColor" stroke-width="1" opacity=".4"/></svg>
+        <div class="pc-name">Утеплитель и мембраны</div>
+        <div class="pc-desc">Минеральная вата Rockwool, Isover. PIR-плиты для плоских кровель. Гидро- и пароизоляционные плёнки.</div>
+        <div class="pc-price">от 200 ₽/м²</div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ══════════ INSTALLATION ══════════ -->
+<section id="installation">
+  <div class="container">
+    <div class="inst-grid">
+      <div>
+        <div class="sec-label rv">Услуги</div>
+        <h2 class="sec-title rv d1">Монтаж кровли</h2>
+        <p class="sec-desc rv d2">Полный цикл кровельных работ — от замера до сдачи объекта с гарантийным талоном</p>
+        <div class="steps">
+          <div class="step rv">
+            <div class="step-n">01</div>
+            <div><h4>Выезд и замер</h4><p>Бесплатный выезд специалиста, обмер кровли, оценка состояния конструкций и составление сметы</p></div>
+          </div>
+          <div class="step rv d1">
+            <div class="step-n">02</div>
+            <div><h4>Проектирование</h4><p>Разработка схемы кровли, подбор материалов, расчёт нагрузок и системы водоотведения</p></div>
+          </div>
+          <div class="step rv d2">
+            <div class="step-n">03</div>
+            <div><h4>Подготовка основания</h4><p>Демонтаж старого покрытия при необходимости, ремонт стропил, укладка утеплителя и гидроизоляции</p></div>
+          </div>
+          <div class="step rv d3">
+            <div class="step-n">04</div>
+            <div><h4>Монтаж покрытия</h4><p>Укладка кровельного материала, монтаж доборных элементов и водосточной системы</p></div>
+          </div>
+          <div class="step rv d4">
+            <div class="step-n">05</div>
+            <div><h4>Сдача объекта</h4><p>Приёмка, подписание акта выполненных работ, оформление гарантийного талона сроком до 3 лет</p></div>
+          </div>
+        </div>
+      </div>
+      <div>
+        <div class="sec-label rv">Преимущества</div>
+        <h3 class="sec-title rv d1" style="font-size:clamp(1.8rem,3vw,2.6rem)">Почему выбирают нас</h3>
+        <div class="advs">
+          <div class="adv rv">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M9 12l2 2 4-4M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+            <h5>Гарантия 3 года</h5>
+            <p>Официальный гарантийный талон на все виды работ</p>
+          </div>
+          <div class="adv rv d1">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+            <h5>Сроки</h5>
+            <p>Строгое соблюдение договорных сроков, работа без выходных</p>
+          </div>
+          <div class="adv rv d2">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2z"/></svg>
+            <h5>Договор</h5>
+            <p>Прозрачная смета, работа по договору, без скрытых платежей</p>
+          </div>
+          <div class="adv rv d3">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/></svg>
+            <h5>Любые объекты</h5>
+            <p>Частные дома, торговые центры, склады, заводы</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════ FLASHINGS ══════════ -->
+<section id="flashings">
+  <div class="container">
+    <div class="flash-grid">
+      <div>
+        <div class="sec-label rv">Производство</div>
+        <h2 class="sec-title rv d1">Изготовление доборов</h2>
+        <p class="sec-desc rv d2">Производство доборных и фасонных элементов из оцинкованной и окрашенной стали на собственном гибочном оборудовании. Любой цвет RAL, любая длина.</p>
+        <div style="margin-top:2rem" class="rv d3"><a href="#contacts" class="btn-p">Заказать доборы</a></div>
+      </div>
+      <div class="flash-feats">
+
+        <div class="feat rv">
+          <div class="feat-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></div>
+          <h5>Конёк кровельный</h5>
+          <p>Плоский, полукруглый, фигурный. Длина до 6 м, сталь 0.5–0.7 мм</p>
+        </div>
+
+        <div class="feat rv d1">
+          <div class="feat-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="4 20 20 4"/><polyline points="4 4 20 20"/></svg></div>
+          <h5>Ендова</h5>
+          <p>Нижняя и верхняя ендова. Покрытие в цвет кровли по RAL</p>
+        </div>
+
+        <div class="feat rv d2">
+          <div class="feat-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"/></svg></div>
+          <h5>Карнизная планка</h5>
+          <p>Защита лобовой доски от влаги. Стандартные и нестандартные профили</p>
+        </div>
+
+        <div class="feat rv d3">
+          <div class="feat-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="9 18 15 12 9 6"/></svg></div>
+          <h5>Ветровая планка</h5>
+          <p>Защита торца кровли от задувания и осадков</p>
+        </div>
+
+        <div class="feat rv">
+          <div class="feat-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 16V8a2 2 0 00-1-1.73l-7-4a2 2 0 00-2 0l-7 4A2 2 0 003 8v8a2 2 0 001 1.73l7 4a2 2 0 002 0l7-4A2 2 0 0021 16z"/></svg></div>
+          <h5>Планка примыкания</h5>
+          <p>Для примыкания кровли к стенам, трубам и другим конструкциям</p>
+        </div>
+
+        <div class="feat rv d1">
+          <div class="feat-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="3"/><path d="M12 2v4m0 12v4M4.22 4.22l2.83 2.83m9.9 9.9l2.83 2.83M2 12h4m12 0h4"/></svg></div>
+          <h5>Нестандартные профили</h5>
+          <p>Изготовление по чертежу. Любая конфигурация сечения и длина</p>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════ SCAFFOLDING ══════════ -->
+<section id="scaffolding">
+  <div class="container">
+    <div class="scaff-grid">
+      <div>
+        <div class="sec-label rv">Аренда</div>
+        <h2 class="sec-title rv d1">Строительные леса</h2>
+        <p class="sec-desc rv d2">Рамные и клиновые строительные леса в аренду для кровельных и фасадных работ. Доставка, монтаж и демонтаж включены в стоимость.</p>
+        <div class="perks rv d3">
+          <div class="perk">Доставка и монтаж включены</div>
+          <div class="perk">Сертифицированное оборудование</div>
+          <div class="perk">Высота настила до 60 метров</div>
+          <div class="perk">Работаем по всему региону</div>
+          <div class="perk">Скидки при долгосрочной аренде</div>
+          <div class="perk">Страхование конструкций</div>
+        </div>
+        <div style="margin-top:2.5rem" class="rv d4"><a href="#contacts" class="btn-p">Рассчитать стоимость</a></div>
+      </div>
+      <div>
+        <div class="sec-label rv">Прайс</div>
+        <h3 class="sec-title rv d1" style="font-size:clamp(1.5rem,2.5vw,2rem)">Примерные цены</h3>
+        <div class="price-cards">
+          <div class="prc rv">
+            <div><div class="prc-name">Рамные леса</div><div class="prc-detail">До 20 м высотой</div></div>
+            <div><div class="prc-amt">250 ₽</div><span class="prc-unit">м² / месяц</span></div>
+          </div>
+          <div class="prc rv d1">
+            <div><div class="prc-name">Клиновые леса</div><div class="prc-detail">До 60 м высотой</div></div>
+            <div><div class="prc-amt">350 ₽</div><span class="prc-unit">м² / месяц</span></div>
+          </div>
+          <div class="prc rv d2">
+            <div><div class="prc-name">Туры строительные</div><div class="prc-detail">До 8 м высотой</div></div>
+            <div><div class="prc-amt">1 800 ₽</div><span class="prc-unit">шт / неделя</span></div>
+          </div>
+          <div class="prc rv d3">
+            <div><div class="prc-name">Монтаж и демонтаж</div><div class="prc-detail">Бригада 4 чел.</div></div>
+            <div><div class="prc-amt">120 ₽</div><span class="prc-unit">м² за установку</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════ CONTACTS ══════════ -->
+<section id="contacts">
+  <div class="container">
+    <div class="sec-label rv">Контакты</div>
+    <h2 class="sec-title rv d1">Свяжитесь с нами</h2>
+    <p class="sec-desc rv d2">Получите бесплатный расчёт или задайте любой вопрос — перезвоним в течение 30 минут</p>
+    <div class="contacts-grid">
+      <div class="ci-list">
+        <div class="rv">
+          <div class="ci-lbl">Телефон</div>
+          <div class="ci-val"><a href="tel:+79952420777">+7 (995) 242-07-77</a></div>
+        </div>
+        <div class="rv d1">
+          <div class="ci-lbl">Email</div>
+          <div class="ci-val"><a href="mailto:kroffgroup@mail.ru">kroffgroup@mail.ru</a></div>
+        </div>
+        <div class="rv d2">
+          <div class="ci-lbl">Режим работы</div>
+          <div class="ci-val" style="font-size:1rem">Пн–Сб: 8:00–20:00<br>Вс: по договорённости</div>
+        </div>
+        <div class="rv d3">
+          <div class="ci-lbl">Виды работ</div>
+          <div class="ci-val" style="font-size:.9rem;color:var(--white-dim);font-weight:300;line-height:1.7">
+            Монтаж и ремонт кровли<br>
+            Изготовление доборных элементов<br>
+            Аренда строительных лесов<br>
+            Поставка кровельных материалов
+          </div>
+        </div>
+      </div>
+      <form class="cform rv" id="cform">
+        <div class="form-row">
+          <div class="fg"><label for="nm">Ваше имя</label><input type="text" id="nm" name="name" placeholder="Иван Иванов" required></div>
+          <div class="fg"><label for="ph">Телефон</label><input type="tel" id="ph" name="phone" placeholder="+7 (___) ___-__-__" required></div>
+        </div>
+        <div class="fg">
+          <label for="svc">Интересующая услуга</label>
+          <select id="svc" name="service">
+            <option value="">Выберите услугу</option>
+            <option>Монтаж кровли</option>
+            <option>Ремонт кровли</option>
+            <option>Изготовление доборов</option>
+            <option>Аренда строительных лесов</option>
+            <option>Поставка материалов</option>
+          </select>
+        </div>
+        <div class="fg"><label for="msg">Сообщение</label><textarea id="msg" name="message" placeholder="Опишите объект: площадь, тип кровли, сроки..."></textarea></div>
+        <button type="submit" class="btn-p" style="width:100%;text-align:center">Отправить заявку</button>
+        <p style="font-size:.72rem;color:var(--white-dim);text-align:center">Перезвоним в течение 30 минут в рабочее время</p>
+      </form>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════ FOOTER ══════════ -->
+<footer>
+  <div class="foot-top">
+    <div class="foot-brand">
+      <a href="#hero" class="logo">KROFF<span>GROUP</span></a>
+      <p>Профессиональные кровельные работы любой сложности. Более 20 лет опыта. Гарантия до 3 лет на все виды работ.</p>
+    </div>
+    <div class="foot-col">
+      <h6>Услуги</h6>
+      <ul>
+        <li><a href="#installation">Монтаж кровли</a></li>
+        <li><a href="#flashings">Изготовление доборов</a></li>
+        <li><a href="#scaffolding">Аренда лесов</a></li>
+        <li><a href="#products">Материалы</a></li>
+      </ul>
+    </div>
+    <div class="foot-col">
+      <h6>Контакты</h6>
+      <ul>
+        <li><a href="tel:+79952420777">+7 (995) 242-07-77</a></li>
+        <li><a href="mailto:kroffgroup@mail.ru">kroffgroup@mail.ru</a></li>
+        <li><a href="#works">Наши работы</a></li>
+        <li><a href="#contacts">Написать нам</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="foot-bot">
+    <p>© 2026 KroffGroup. Все права защищены.</p>
+    <p>Профессиональные кровельные работы</p>
+  </div>
+</footer>
+
+<script>
+// Header scroll
+const hdr = document.getElementById('hdr');
+window.addEventListener('scroll', () => hdr.classList.toggle('scrolled', scrollY > 50));
+
+// Hamburger
+const hbg = document.getElementById('hbg');
+const mob = document.getElementById('mob');
+hbg.addEventListener('click', () => {
+  hbg.classList.toggle('open');
+  mob.classList.toggle('open');
+  document.body.style.overflow = mob.classList.contains('open') ? 'hidden' : '';
+});
+document.querySelectorAll('.ml').forEach(a => a.addEventListener('click', () => {
+  hbg.classList.remove('open');
+  mob.classList.remove('open');
+  document.body.style.overflow = '';
+}));
+
+// Hero parallax
+(function() {
+  const heroEl  = document.getElementById('hero');
+  const slash   = heroEl.querySelector('.hero-slash');
+  const line    = heroEl.querySelector('.hero-line');
+  const content = heroEl.querySelector('.hero-content');
+  let ticking = false;
+  window.addEventListener('scroll', () => {
+    if (ticking) return;
+    ticking = true;
+    requestAnimationFrame(() => {
+      const y = window.scrollY;
+      if (y < heroEl.offsetHeight) {
+        slash.style.transform   = `translateY(${y * 0.15}px)`;
+        line.style.transform    = `translateY(${y * 0.4}px)`;
+        content.style.transform = `translateY(${y * 0.25}px)`;
+      }
+      ticking = false;
+    });
+  }, { passive: true });
+})();
+
+// Scroll reveal
+const obs = new IntersectionObserver(entries => {
+  entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); obs.unobserve(e.target); } });
+}, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+document.querySelectorAll('.rv').forEach(el => obs.observe(el));
+
+
+// Hero stagger on load
+window.addEventListener('load', () => {
+  const els = document.querySelectorAll('.hero-content > *');
+  els.forEach((el, i) => {
+    el.style.cssText = `opacity:0;transform:translateY(18px);transition:opacity .6s ease ${i*.12}s,transform .6s ease ${i*.12}s`;
+    requestAnimationFrame(() => requestAnimationFrame(() => {
+      el.style.opacity = '1';
+      el.style.transform = 'none';
+    }));
+  });
+});
+
+
+// Active nav highlight
+const secs = document.querySelectorAll('section[id]');
+const navAs = document.querySelectorAll('.nav-links a');
+window.addEventListener('scroll', () => {
+  let cur = '';
+  secs.forEach(s => { if (scrollY >= s.offsetTop - 120) cur = s.id; });
+  navAs.forEach(a => { a.style.color = a.getAttribute('href') === '#'+cur ? 'var(--white)' : ''; });
+}, { passive: true });
+
+
+// Form
+document.getElementById('cform').addEventListener('submit', e => {
+  e.preventDefault();
+  const btn = e.target.querySelector('button');
+  btn.textContent = 'Заявка отправлена!';
+  btn.style.background = '#2a9d3a';
+  btn.disabled = true;
+  setTimeout(() => {
+    btn.textContent = 'Отправить заявку';
+    btn.style.background = '';
+    btn.disabled = false;
+    e.target.reset();
+  }, 3500);
+});
+</script>
+</body>
+</html>
