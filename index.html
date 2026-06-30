@@ -456,16 +456,46 @@ textarea:focus-visible, select:focus-visible, .wc:focus-visible {
   outline: 2px solid var(--orange); outline-offset: 3px; border-radius: 2px;
 }
 
-/* ── HERO VIDEO ── */
-.hero-video {
-  position: absolute; inset: 0; width: 100%; height: 100%;
-  object-fit: cover; z-index: 0; opacity: .5;
-}
-.hero-overlay {
-  position: absolute; inset: 0; z-index: 1;
-  background: linear-gradient(135deg, rgba(15,15,15,.94) 0%, rgba(15,15,15,.6) 48%, rgba(15,15,15,.85) 100%);
-}
+/* ── HERO BLUEPRINT ── */
 .hero-slash, .hero-line { z-index: 1; }
+
+.hero-grid {
+  position: absolute; inset: 0; z-index: 0; pointer-events: none;
+  background-image:
+    linear-gradient(rgba(240,112,32,.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(240,112,32,.05) 1px, transparent 1px);
+  background-size: 46px 46px;
+  -webkit-mask-image: radial-gradient(ellipse 75% 65% at 72% 50%, #000 28%, transparent 78%);
+          mask-image: radial-gradient(ellipse 75% 65% at 72% 50%, #000 28%, transparent 78%);
+}
+.hero-blueprint {
+  position: absolute; right: 1%; top: 50%; transform: translateY(-50%);
+  width: 54%; max-width: 800px; height: auto; z-index: 1; pointer-events: none; opacity: .92;
+}
+.hero-blueprint path, .hero-blueprint line, .hero-blueprint polyline {
+  fill: none; vector-effect: non-scaling-stroke;
+}
+.bp-line  { stroke: rgba(240,112,32,.6);  stroke-width: 1.6; stroke-linejoin: round; stroke-linecap: round;
+  stroke-dasharray: 1; stroke-dashoffset: 1; animation: bpDraw 1.5s ease forwards; }
+.bp-faint { stroke: rgba(255,255,255,.2);  stroke-width: 1.1; stroke-linejoin: round;
+  stroke-dasharray: 1; stroke-dashoffset: 1; animation: bpDraw 1.5s ease forwards; }
+.bp-dim   { stroke: rgba(240,112,32,.28); stroke-width: 1; stroke-dasharray: 5 5; opacity: 0; animation: bpFade .8s ease 1.4s forwards; }
+.bp-dot   { fill: rgba(245,166,35,.85); stroke: none; opacity: 0; animation: bpFade .6s ease forwards; }
+@keyframes bpDraw { to { stroke-dashoffset: 0; } }
+@keyframes bpFade { to { opacity: 1; } }
+
+.hero-scan {
+  position: absolute; top: 12%; bottom: 12%; right: 6%; width: 2px; z-index: 1; pointer-events: none;
+  background: linear-gradient(to bottom, transparent, rgba(245,166,35,.75) 38%, rgba(245,166,35,.75) 62%, transparent);
+  box-shadow: 0 0 14px rgba(245,166,35,.7);
+  opacity: 0; animation: bpScan 6s ease-in-out 1.6s infinite;
+}
+@keyframes bpScan {
+  0%   { transform: translateX(0);     opacity: 0; }
+  12%  { opacity: 1; }
+  88%  { opacity: 1; }
+  100% { transform: translateX(-42vw); opacity: 0; }
+}
 
 /* ── WORKS IMG + LIGHTBOX ── */
 .wc-img img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block; transition: transform .4s; }
@@ -524,6 +554,86 @@ textarea:focus-visible, select:focus-visible, .wc:focus-visible {
 .faq-a { max-height: 0; overflow: hidden; transition: max-height .35s ease; }
 .faq-a-inner { padding: 0 1.5rem 1.25rem; font-size: .85rem; line-height: 1.7; color: var(--white-dim); font-weight: 300; }
 
+/* ── CALCULATOR ── */
+#calc {
+  background: var(--graphite);
+  background-image: repeating-linear-gradient(45deg, transparent, transparent 2px, rgba(255,255,255,.01) 2px, rgba(255,255,255,.01) 4px);
+}
+.calc-grid { display: grid; grid-template-columns: 1.25fr 1fr; gap: 3rem; margin-top: 2.5rem; align-items: start; }
+.calc-controls { display: flex; flex-direction: column; gap: 1.9rem; }
+.calc-field > .calc-lbl {
+  font-size: .68rem; letter-spacing: .14em; text-transform: uppercase; color: var(--white-dim);
+  display: flex; justify-content: space-between; align-items: baseline; margin-bottom: .7rem;
+}
+.calc-field .calc-val { color: var(--orange); font-family: var(--font-d); font-size: 1.05rem; letter-spacing: .03em; }
+
+.seg-group { display: grid; gap: .6rem; }
+.seg-group.cols-2 { grid-template-columns: 1fr 1fr; }
+.seg {
+  background: var(--anthracite); border: 1px solid rgba(255,255,255,.08); border-radius: 2px;
+  padding: .8rem 1rem; cursor: pointer; transition: border-color .2s, background .2s;
+  display: flex; justify-content: space-between; align-items: center; gap: .5rem;
+}
+.seg:hover { border-color: rgba(240,112,32,.4); }
+.seg.active { border-color: var(--orange); background: rgba(240,112,32,.08); }
+.seg-name { font-size: .85rem; font-weight: 500; }
+.seg-price { font-size: .72rem; color: var(--white-dim); white-space: nowrap; }
+.seg.active .seg-price { color: var(--orange); }
+
+input[type="range"].calc-range {
+  -webkit-appearance: none; appearance: none; width: 100%; height: 4px; border-radius: 2px;
+  background: var(--anthracite); outline: none; cursor: pointer;
+}
+input[type="range"].calc-range::-webkit-slider-thumb {
+  -webkit-appearance: none; appearance: none; width: 20px; height: 20px; border-radius: 50%;
+  background: var(--orange); cursor: pointer; border: 3px solid var(--graphite); box-shadow: 0 0 0 1px var(--orange);
+}
+input[type="range"].calc-range::-moz-range-thumb {
+  width: 16px; height: 16px; border-radius: 50%; background: var(--orange); cursor: pointer; border: 3px solid var(--graphite);
+}
+.calc-area-row { display: flex; align-items: center; gap: 1rem; }
+.calc-area-row input[type="number"] {
+  width: 110px; background: var(--anthracite); border: 1px solid rgba(255,255,255,.08); color: var(--white);
+  padding: .5rem .7rem; border-radius: 2px; font-family: var(--font-b); font-size: .9rem; outline: none; transition: border-color .2s;
+  -webkit-appearance: none; appearance: none;
+}
+.calc-area-row input[type="number"]:focus { border-color: var(--orange); }
+
+.checks { display: grid; grid-template-columns: 1fr 1fr; gap: .6rem; }
+.chk {
+  display: flex; align-items: center; gap: .6rem; cursor: pointer;
+  background: var(--anthracite); border: 1px solid rgba(255,255,255,.08); border-radius: 2px; padding: .7rem .9rem;
+  transition: border-color .2s, background .2s;
+}
+.chk:hover { border-color: rgba(240,112,32,.4); }
+.chk input { position: absolute; opacity: 0; pointer-events: none; }
+.chk .box {
+  width: 17px; height: 17px; border: 1px solid var(--steel-lt); border-radius: 2px; flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center; transition: background .2s, border-color .2s;
+}
+.chk .box svg { width: 11px; height: 11px; color: var(--black); opacity: 0; transition: opacity .15s; }
+.chk input:checked + .box { background: var(--orange); border-color: var(--orange); }
+.chk input:checked + .box svg { opacity: 1; }
+.chk input:focus-visible + .box { outline: 2px solid var(--orange); outline-offset: 2px; }
+.chk-txt { display: flex; flex-direction: column; }
+.chk-name { font-size: .82rem; font-weight: 500; }
+.chk-price { font-size: .68rem; color: var(--white-dim); }
+
+.calc-result {
+  background: var(--black); border: 1px solid rgba(240,112,32,.25); border-radius: 3px;
+  padding: 2rem; position: sticky; top: 90px;
+}
+.calc-result h4 { font-size: .7rem; letter-spacing: .16em; text-transform: uppercase; color: var(--orange); margin-bottom: 1.25rem; }
+.calc-rows { display: flex; flex-direction: column; gap: .7rem; margin-bottom: 1.25rem; }
+.calc-row { display: flex; justify-content: space-between; align-items: baseline; font-size: .85rem; color: var(--white-dim); }
+.calc-row span:last-child { color: var(--white); font-weight: 500; }
+.calc-total { border-top: 1px solid rgba(255,255,255,.1); padding-top: 1.25rem; }
+.calc-total .calc-row { font-size: .9rem; }
+.calc-sum { font-family: var(--font-d); font-size: 2.6rem; color: var(--orange); line-height: 1; margin: .35rem 0 .2rem; }
+.calc-range-note { font-size: .72rem; color: var(--white-dim); }
+.calc-result .btn-p { width: 100%; text-align: center; margin-top: 1.5rem; }
+.calc-disclaimer { font-size: .68rem; color: var(--steel-lt); line-height: 1.5; margin-top: 1rem; }
+
 /* ── FORM VALIDATION ── */
 .fg input.invalid, .fg textarea.invalid, .fg select.invalid { border-color: #e0533d; }
 .fg .err { font-size: .68rem; color: #ec9485; display: none; }
@@ -540,9 +650,16 @@ textarea:focus-visible, select:focus-visible, .wc:focus-visible {
 }
 
 /* ── RESPONSIVE ── */
+@media (max-width: 1180px) {
+  .nav-links { gap: 1.15rem; }
+  .nav-links a { font-size: .72rem; letter-spacing: .07em; }
+}
 @media (max-width: 1024px) {
   .rev-grid { grid-template-columns: 1fr 1fr; }
   .guarantees { grid-template-columns: 1fr 1fr; }
+  .calc-grid { grid-template-columns: 1fr; gap: 2.5rem; }
+  .hero-blueprint { width: 62%; opacity: .6; }
+  .hero-scan { display: none; }
   .works-grid { grid-template-columns: 1fr 1fr; }
   .wc:nth-child(n) { grid-column: span 1; }
   .wc:nth-child(1) { grid-column: span 2; }
@@ -561,6 +678,7 @@ textarea:focus-visible, select:focus-visible, .wc:focus-visible {
   .advs { grid-template-columns: 1fr; }
   .flash-feats { grid-template-columns: 1fr; }
   .hero-stats { gap: 1.5rem; }
+  .hero-blueprint { width: 130%; right: -42%; opacity: .28; }
   .rev-grid { grid-template-columns: 1fr; }
   .guarantees { grid-template-columns: 1fr 1fr; }
   .lb-prev { left: .5rem; } .lb-next { right: .5rem; }
@@ -583,6 +701,7 @@ textarea:focus-visible, select:focus-visible, .wc:focus-visible {
       <li><a href="#installation">Монтаж</a></li>
       <li><a href="#flashings">Доборы</a></li>
       <li><a href="#scaffolding">Леса</a></li>
+      <li><a href="#calc">Расчёт</a></li>
       <li><a href="#reviews">Отзывы</a></li>
       <li><a href="#faq">Вопросы</a></li>
       <li><a href="#contacts" class="nav-cta">Связаться</a></li>
@@ -597,6 +716,7 @@ textarea:focus-visible, select:focus-visible, .wc:focus-visible {
   <a href="#installation" class="ml">Монтаж кровли</a>
   <a href="#flashings" class="ml">Доборы</a>
   <a href="#scaffolding" class="ml">Аренда лесов</a>
+  <a href="#calc" class="ml">Калькулятор</a>
   <a href="#reviews" class="ml">Отзывы</a>
   <a href="#faq" class="ml">Вопросы</a>
   <a href="#contacts" class="ml">Контакты</a>
@@ -604,8 +724,35 @@ textarea:focus-visible, select:focus-visible, .wc:focus-visible {
 
 <!-- ══════════ HERO ══════════ -->
 <section id="hero">
-  <video class="hero-video" id="heroVid" autoplay muted loop playsinline preload="none" poster="assets/hero-poster.webp" aria-hidden="true"></video>
-  <div class="hero-overlay"></div>
+  <div class="hero-grid" aria-hidden="true"></div>
+  <svg class="hero-blueprint" viewBox="0 0 600 460" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+    <!-- основание / земля -->
+    <line class="bp-line" x1="40" y1="400" x2="560" y2="400" pathLength="1" style="animation-delay:0s"/>
+    <!-- стены -->
+    <line class="bp-line" x1="120" y1="400" x2="120" y2="240" pathLength="1" style="animation-delay:.15s"/>
+    <line class="bp-line" x1="480" y1="400" x2="480" y2="240" pathLength="1" style="animation-delay:.15s"/>
+    <!-- затяжка (нижний пояс фермы) -->
+    <line class="bp-line" x1="120" y1="240" x2="480" y2="240" pathLength="1" style="animation-delay:.3s"/>
+    <!-- скаты крыши со свесами -->
+    <polyline class="bp-line" points="90,240 300,80 510,240" pathLength="1" style="animation-delay:.45s"/>
+    <!-- кровельный слой (параллельно скатам) -->
+    <polyline class="bp-line" points="92,228 300,68 508,228" pathLength="1" style="animation-delay:.65s"/>
+    <!-- стропильная ферма (W) -->
+    <line class="bp-faint" x1="300" y1="80" x2="300" y2="240" pathLength="1" style="animation-delay:.85s"/>
+    <line class="bp-faint" x1="300" y1="150" x2="200" y2="240" pathLength="1" style="animation-delay:.95s"/>
+    <line class="bp-faint" x1="300" y1="150" x2="400" y2="240" pathLength="1" style="animation-delay:.95s"/>
+    <line class="bp-faint" x1="210" y1="165" x2="200" y2="240" pathLength="1" style="animation-delay:1.05s"/>
+    <line class="bp-faint" x1="390" y1="165" x2="400" y2="240" pathLength="1" style="animation-delay:1.05s"/>
+    <!-- размерная линия пролёта -->
+    <line class="bp-dim" x1="120" y1="430" x2="480" y2="430"/>
+    <line class="bp-dim" x1="120" y1="400" x2="120" y2="438"/>
+    <line class="bp-dim" x1="480" y1="400" x2="480" y2="438"/>
+    <!-- узловые точки -->
+    <circle class="bp-dot" cx="300" cy="80" r="3.5" style="animation-delay:1.3s"/>
+    <circle class="bp-dot" cx="120" cy="240" r="3.5" style="animation-delay:1.4s"/>
+    <circle class="bp-dot" cx="480" cy="240" r="3.5" style="animation-delay:1.4s"/>
+  </svg>
+  <div class="hero-scan" aria-hidden="true"></div>
   <div class="hero-slash"></div>
   <div class="hero-line"></div>
   <div class="hero-content">
@@ -921,6 +1068,75 @@ textarea:focus-visible, select:focus-visible, .wc:focus-visible {
   </div>
 </section>
 
+<!-- ══════════ CALCULATOR ══════════ -->
+<section id="calc">
+  <div class="container">
+    <div class="sec-label rv">Калькулятор</div>
+    <h2 class="sec-title rv d1">Рассчитать стоимость</h2>
+    <p class="sec-desc rv d2">Прикиньте бюджет кровли за минуту. Это предварительная оценка — точную цену назовём после бесплатного замера.</p>
+
+    <div class="calc-grid">
+      <div class="calc-controls rv d2">
+
+        <div class="calc-field">
+          <div class="calc-lbl">Тип кровли</div>
+          <div class="seg-group cols-2" id="calcMaterial">
+            <div class="seg active" data-price="380"><span class="seg-name">Металлочерепица</span><span class="seg-price">380 ₽/м²</span></div>
+            <div class="seg" data-price="240"><span class="seg-name">Профнастил</span><span class="seg-price">240 ₽/м²</span></div>
+            <div class="seg" data-price="420"><span class="seg-name">Мягкая кровля</span><span class="seg-price">420 ₽/м²</span></div>
+            <div class="seg" data-price="550"><span class="seg-name">Фальцевая</span><span class="seg-price">550 ₽/м²</span></div>
+          </div>
+        </div>
+
+        <div class="calc-field">
+          <div class="calc-lbl">Площадь кровли <span class="calc-val" id="calcAreaVal">250 м²</span></div>
+          <div class="calc-area-row">
+            <input type="range" class="calc-range" id="calcAreaRange" min="50" max="2000" step="10" value="250" aria-label="Площадь кровли, м²">
+            <input type="number" id="calcAreaNum" min="50" max="2000" step="10" value="250" aria-label="Площадь кровли числом">
+          </div>
+        </div>
+
+        <div class="calc-field">
+          <div class="calc-lbl">Сложность кровли</div>
+          <div class="seg-group cols-2" id="calcComplexity">
+            <div class="seg active" data-mult="1"><span class="seg-name">Простая</span><span class="seg-price">1–2 ската</span></div>
+            <div class="seg" data-mult="1.15"><span class="seg-name">Средняя</span><span class="seg-price">+15%</span></div>
+            <div class="seg" data-mult="1.3"><span class="seg-name">Сложная</span><span class="seg-price">+30%</span></div>
+            <div class="seg" data-mult="1.5"><span class="seg-name">Многоскатная</span><span class="seg-price">+50%</span></div>
+          </div>
+        </div>
+
+        <div class="calc-field">
+          <div class="calc-lbl">Дополнительно</div>
+          <div class="checks" id="calcAddons">
+            <label class="chk"><input type="checkbox" data-add="200"><span class="box"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></span><span class="chk-txt"><span class="chk-name">Утепление</span><span class="chk-price">+200 ₽/м²</span></span></label>
+            <label class="chk"><input type="checkbox" data-add="120"><span class="box"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></span><span class="chk-txt"><span class="chk-name">Демонтаж старой кровли</span><span class="chk-price">+120 ₽/м²</span></span></label>
+            <label class="chk"><input type="checkbox" data-add="90"><span class="box"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></span><span class="chk-txt"><span class="chk-name">Водосточная система</span><span class="chk-price">+90 ₽/м²</span></span></label>
+            <label class="chk"><input type="checkbox" data-add="70"><span class="box"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></span><span class="chk-txt"><span class="chk-name">Доборные элементы</span><span class="chk-price">+70 ₽/м²</span></span></label>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="calc-result rv d3">
+        <h4>Предварительная смета</h4>
+        <div class="calc-rows">
+          <div class="calc-row"><span>Материалы кровли</span><span id="calcMatSum">—</span></div>
+          <div class="calc-row"><span>Монтажные работы</span><span id="calcWorkSum">—</span></div>
+          <div class="calc-row"><span>Доп. услуги</span><span id="calcAddSum">—</span></div>
+        </div>
+        <div class="calc-total">
+          <div class="calc-row"><span>Итого (ориентир)</span></div>
+          <div class="calc-sum" id="calcTotal">—</div>
+          <div class="calc-range-note" id="calcRange">диапазон уточняется после замера</div>
+        </div>
+        <a href="#contacts" class="btn-p" id="calcCta">Получить точный расчёт</a>
+        <p class="calc-disclaimer">Расчёт носит ориентировочный характер и не является публичной офертой. Финальная стоимость определяется после выезда замерщика.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
 <!-- ══════════ REVIEWS ══════════ -->
 <section id="reviews">
   <div class="container">
@@ -1151,6 +1367,7 @@ textarea:focus-visible, select:focus-visible, .wc:focus-visible {
         <li><a href="#flashings">Изготовление доборов</a></li>
         <li><a href="#scaffolding">Аренда лесов</a></li>
         <li><a href="#products">Материалы</a></li>
+        <li><a href="#calc">Калькулятор стоимости</a></li>
       </ul>
     </div>
     <div class="foot-col">
@@ -1173,20 +1390,6 @@ textarea:focus-visible, select:focus-visible, .wc:focus-visible {
 
 <script>
 const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-
-// Hero background video — грузим только на десктопе и без reduced-motion
-(function() {
-  const v = document.getElementById('heroVid');
-  if (!v) return;
-  const small = window.matchMedia('(max-width: 768px)').matches;
-  if (reduceMotion || small) return; // на мобильных и при reduced-motion остаётся постер
-  const s = document.createElement('source');
-  s.src = 'assets/hero_roof.mp4';
-  s.type = 'video/mp4';
-  v.appendChild(s);
-  v.load();
-  v.play().catch(() => {}); // если автоплей заблокирован — остаётся постер
-})();
 
 // Header scroll
 const hdr = document.getElementById('hdr');
@@ -1226,11 +1429,11 @@ mob.addEventListener('keydown', e => {
 
 // Hero parallax
 (function() {
-  const heroEl  = document.getElementById('hero');
-  const video   = document.getElementById('heroVid');
-  const slash   = heroEl.querySelector('.hero-slash');
-  const line    = heroEl.querySelector('.hero-line');
-  const content = heroEl.querySelector('.hero-content');
+  const heroEl    = document.getElementById('hero');
+  const slash     = heroEl.querySelector('.hero-slash');
+  const line      = heroEl.querySelector('.hero-line');
+  const content   = heroEl.querySelector('.hero-content');
+  const blueprint = heroEl.querySelector('.hero-blueprint');
   if (reduceMotion) return;
   let ticking = false;
   window.addEventListener('scroll', () => {
@@ -1242,7 +1445,7 @@ mob.addEventListener('keydown', e => {
         slash.style.transform   = `translateY(${y * 0.15}px)`;
         line.style.transform    = `translateY(${y * 0.4}px)`;
         content.style.transform = `translateY(${y * 0.25}px)`;
-        if (video) video.style.transform = `translateY(${y * 0.12}px) scale(1.05)`;
+        if (blueprint) blueprint.style.transform = `translateY(calc(-50% + ${y * 0.08}px))`;
       }
       ticking = false;
     });
@@ -1361,6 +1564,60 @@ document.querySelectorAll('.faq-q').forEach(q => {
     panel.style.maxHeight = open ? '0' : panel.scrollHeight + 'px';
   });
 });
+
+// Калькулятор стоимости кровли
+(function() {
+  const WORK_RATE = 350; // ₽/м² базовый монтаж
+  const matGroup = document.getElementById('calcMaterial');
+  const cmpGroup = document.getElementById('calcComplexity');
+  const addons   = [...document.querySelectorAll('#calcAddons input')];
+  const range    = document.getElementById('calcAreaRange');
+  const num       = document.getElementById('calcAreaNum');
+  const areaVal  = document.getElementById('calcAreaVal');
+  if (!matGroup) return;
+
+  const fmt = n => Math.round(n).toLocaleString('ru-RU') + ' ₽';
+
+  const recalc = () => {
+    const price = +matGroup.querySelector('.seg.active').dataset.price;
+    const mult  = +cmpGroup.querySelector('.seg.active').dataset.mult;
+    const area  = +num.value || 0;
+    const addPerM2 = addons.reduce((s, c) => s + (c.checked ? +c.dataset.add : 0), 0);
+
+    const matCost  = price * area;
+    const workCost = WORK_RATE * mult * area;
+    const addCost  = addPerM2 * area;
+    const total    = matCost + workCost + addCost;
+
+    document.getElementById('calcMatSum').textContent  = fmt(matCost);
+    document.getElementById('calcWorkSum').textContent = fmt(workCost);
+    document.getElementById('calcAddSum').textContent  = addCost ? fmt(addCost) : '—';
+    document.getElementById('calcTotal').textContent   = total ? fmt(total) : '—';
+    document.getElementById('calcRange').textContent   =
+      total ? `вилка: ${fmt(total * 0.92)} – ${fmt(total * 1.12)}` : 'диапазон уточняется после замера';
+  };
+
+  // выбор материала / сложности (segmented)
+  [matGroup, cmpGroup].forEach(group => {
+    group.addEventListener('click', e => {
+      const seg = e.target.closest('.seg');
+      if (!seg) return;
+      group.querySelectorAll('.seg').forEach(s => s.classList.remove('active'));
+      seg.classList.add('active');
+      recalc();
+    });
+  });
+  // синхронизация slider <-> number
+  range.addEventListener('input', () => { num.value = range.value; areaVal.textContent = range.value + ' м²'; recalc(); });
+  num.addEventListener('input', () => {
+    let v = Math.min(+num.value || 0, +num.max);
+    range.value = Math.max(v, +range.min);
+    areaVal.textContent = (v || 0) + ' м²';
+    recalc();
+  });
+  addons.forEach(c => c.addEventListener('change', recalc));
+  recalc();
+})();
 
 // Маска телефона
 const phEl = document.getElementById('ph');
