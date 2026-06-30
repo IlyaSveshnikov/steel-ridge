@@ -1,0 +1,49 @@
+# KroffGroup — лендинг кровельной компании
+
+Одностраничный сайт-лендинг для кровельной компании: монтаж кровли, изготовление доборных
+элементов, аренда строительных лесов и поставка материалов.
+
+🔗 **Живой сайт:** https://ilyasveshnikov.github.io/kroffgroup/
+
+![KroffGroup preview](assets/hero-poster.webp)
+
+## Возможности
+
+- **Hero с фоновым видео** кровли (постер + затемнение, отключается при `prefers-reduced-motion`,
+  на мобильных грузится только постер).
+- **Параллакс** и анимация появления секций на скролле (`IntersectionObserver`).
+- **Галерея работ** в bento-сетке с доступным lightbox (навигация ←/→, Esc, фокус-возврат).
+- Секции **отзывов** и **FAQ-аккордеона**, блок гарантий.
+- **Count-up** анимация ключевых цифр.
+- **Форма заявки** с валидацией, маской телефона и состояниями (демо — без бэкенда).
+- **SEO**: мета-теги, Open Graph / Twitter Card, JSON-LD (`RoofingContractor`), `sitemap.xml`,
+  `robots.txt`, `manifest.webmanifest`.
+- **Доступность**: skip-link, `:focus-visible`, ARIA для меню и интерактивных компонентов,
+  фокус-трап в модалках.
+
+## Стек
+
+Чистый **HTML + CSS + ванильный JavaScript**, без зависимостей и сборки. Весь сайт — один
+`index.html` + статические ассеты. Шрифты — Bebas Neue / DM Sans (Google Fonts).
+
+## Локальный запуск
+
+```bash
+python3 -m http.server 8000
+# открыть http://localhost:8000
+```
+
+## Структура
+
+```
+index.html              # вся разметка, стили и скрипты
+assets/
+  hero_roof.mp4         # сжатое фоновое видео
+  hero-poster.webp      # постер hero
+  works/work-1..5.webp  # фото работ
+robots.txt · sitemap.xml · manifest.webmanifest
+```
+
+## Деплой
+
+GitHub Pages: Settings → Pages → Source: ветка `main`, папка `/ (root)`.

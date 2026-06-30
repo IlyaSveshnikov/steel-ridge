@@ -1,0 +1,11 @@
+.DS_Store
+*.log
+node_modules/
+
+# Локальная конфигурация инструментов
+.claude/
+
+# Тяжёлые исходники медиа в корне (в прод идут сжатые версии из assets/)
+/hero_roof_better_quality.mp4
+/hero_roof.mp4
+/roof1.png
