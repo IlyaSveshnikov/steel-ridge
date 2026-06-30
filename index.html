@@ -468,34 +468,14 @@ textarea:focus-visible, select:focus-visible, .wc:focus-visible {
   -webkit-mask-image: radial-gradient(ellipse 75% 65% at 72% 50%, #000 28%, transparent 78%);
           mask-image: radial-gradient(ellipse 75% 65% at 72% 50%, #000 28%, transparent 78%);
 }
-.hero-blueprint {
+/* Слот под пользовательский макет крыши (схематичный чертёж).
+   Файл: assets/hero-art.svg (или .png — поменяй src). Если файла нет — скрывается. */
+.hero-art {
   position: absolute; right: 1%; top: 50%; transform: translateY(-50%);
-  width: 54%; max-width: 800px; height: auto; z-index: 1; pointer-events: none; opacity: .92;
+  width: 52%; max-width: 780px; height: auto; z-index: 1; pointer-events: none;
+  opacity: .9; animation: artIn 1s ease both;
 }
-.hero-blueprint path, .hero-blueprint line, .hero-blueprint polyline, .hero-blueprint polygon, .hero-blueprint rect {
-  fill: none; vector-effect: non-scaling-stroke;
-}
-.bp-line  { stroke: rgba(240,112,32,.6);  stroke-width: 1.6; stroke-linejoin: round; stroke-linecap: round;
-  stroke-dasharray: 1; stroke-dashoffset: 1; animation: bpDraw 1.5s ease forwards; }
-.bp-faint { stroke: rgba(255,255,255,.2);  stroke-width: 1.1; stroke-linejoin: round;
-  stroke-dasharray: 1; stroke-dashoffset: 1; animation: bpDraw 1.5s ease forwards; }
-.bp-dim   { stroke: rgba(240,112,32,.28); stroke-width: 1; stroke-dasharray: 5 5; opacity: 0; animation: bpFade .8s ease 1.4s forwards; }
-.bp-dot   { fill: rgba(245,166,35,.85); stroke: none; opacity: 0; animation: bpFade .6s ease forwards; }
-@keyframes bpDraw { to { stroke-dashoffset: 0; } }
-@keyframes bpFade { to { opacity: 1; } }
-
-.hero-scan {
-  position: absolute; top: 12%; bottom: 12%; right: 6%; width: 2px; z-index: 1; pointer-events: none;
-  background: linear-gradient(to bottom, transparent, rgba(245,166,35,.75) 38%, rgba(245,166,35,.75) 62%, transparent);
-  box-shadow: 0 0 14px rgba(245,166,35,.7);
-  opacity: 0; animation: bpScan 6s ease-in-out 1.6s infinite;
-}
-@keyframes bpScan {
-  0%   { transform: translateX(0);     opacity: 0; }
-  12%  { opacity: 1; }
-  88%  { opacity: 1; }
-  100% { transform: translateX(-42vw); opacity: 0; }
-}
+@keyframes artIn { from { opacity: 0; transform: translateY(-50%) scale(.97); } }
 
 /* ── WORKS IMG + LIGHTBOX ── */
 .wc-img img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block; transition: transform .4s; }
@@ -658,8 +638,7 @@ input[type="range"].calc-range::-moz-range-thumb {
   .rev-grid { grid-template-columns: 1fr 1fr; }
   .guarantees { grid-template-columns: 1fr 1fr; }
   .calc-grid { grid-template-columns: 1fr; gap: 2.5rem; }
-  .hero-blueprint { width: 62%; opacity: .6; }
-  .hero-scan { display: none; }
+  .hero-art { width: 60%; opacity: .55; }
   .works-grid { grid-template-columns: 1fr 1fr; }
   .wc:nth-child(n) { grid-column: span 1; }
   .wc:nth-child(1) { grid-column: span 2; }
@@ -678,7 +657,7 @@ input[type="range"].calc-range::-moz-range-thumb {
   .advs { grid-template-columns: 1fr; }
   .flash-feats { grid-template-columns: 1fr; }
   .hero-stats { gap: 1.5rem; }
-  .hero-blueprint { width: 130%; right: -42%; opacity: .28; }
+  .hero-art { width: 120%; right: -35%; opacity: .22; }
   .rev-grid { grid-template-columns: 1fr; }
   .guarantees { grid-template-columns: 1fr 1fr; }
   .lb-prev { left: .5rem; } .lb-next { right: .5rem; }
@@ -725,47 +704,9 @@ input[type="range"].calc-range::-moz-range-thumb {
 <!-- ══════════ HERO ══════════ -->
 <section id="hero">
   <div class="hero-grid" aria-hidden="true"></div>
-  <svg class="hero-blueprint" viewBox="0 0 640 540" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-    <!-- ── изометрический дом ── -->
-    <!-- правая стена -->
-    <polygon class="bp-line" points="340,330 524.6,436.6 524.6,316.6 340,210" pathLength="1" style="animation-delay:.15s"/>
-    <!-- левая стена -->
-    <polygon class="bp-line" points="340,330 219.3,399.7 219.3,279.7 340,210" pathLength="1" style="animation-delay:.15s"/>
-    <!-- фронтон (треугольник под крышей) -->
-    <polygon class="bp-line" points="340,210 219.3,279.7 279.65,174.85" pathLength="1" style="animation-delay:.4s"/>
-    <!-- лицевой скат крыши (с коньком) -->
-    <polygon class="bp-line" points="340,210 524.6,316.6 464.25,281.45 279.65,174.85" pathLength="1" style="animation-delay:.55s"/>
-
-    <!-- фальцевые швы кровли -->
-    <line class="bp-faint" x1="380.6" y1="233.45" x2="320.25" y2="198.3" pathLength="1" style="animation-delay:.82s"/>
-    <line class="bp-faint" x1="421.2" y1="256.9"  x2="360.9" y2="221.75" pathLength="1" style="animation-delay:.88s"/>
-    <line class="bp-faint" x1="461.8" y1="280.4"  x2="401.5" y2="245.2" pathLength="1" style="animation-delay:.94s"/>
-    <line class="bp-faint" x1="502.4" y1="303.8"  x2="442.1" y2="268.65" pathLength="1" style="animation-delay:1s"/>
-
-    <!-- дымоход -->
-    <polyline class="bp-faint" points="386,232 386,188 405.9,199.5 405.9,243.5" pathLength="1" style="animation-delay:1.05s"/>
-    <polyline class="bp-faint" points="382,185 386,188" pathLength="1" style="animation-delay:1.1s"/>
-    <polyline class="bp-faint" points="382,185 410,200 405.9,199.5" pathLength="1" style="animation-delay:1.1s"/>
-
-    <!-- окно на правой стене + переплёт -->
-    <polygon class="bp-faint" points="439.4,329.4 478.5,351.95 478.5,301.95 439.4,279.4" pathLength="1" style="animation-delay:1.15s"/>
-    <line class="bp-faint" x1="458.95" y1="290.7" x2="458.95" y2="340.7" pathLength="1" style="animation-delay:1.25s"/>
-    <line class="bp-faint" x1="439.4" y1="304.4" x2="478.5" y2="326.95" pathLength="1" style="animation-delay:1.25s"/>
-
-    <!-- окно на левой стене + переплёт -->
-    <polygon class="bp-faint" points="233.5,331.5 201.55,349.95 201.55,309.95 233.5,291.5" pathLength="1" style="animation-delay:1.15s"/>
-    <line class="bp-faint" x1="217.5" y1="300.7" x2="217.5" y2="340.7" pathLength="1" style="animation-delay:1.25s"/>
-    <line class="bp-faint" x1="233.5" y1="311.5" x2="201.55" y2="329.95" pathLength="1" style="animation-delay:1.25s"/>
-
-    <!-- дверь на левой стене -->
-    <polyline class="bp-faint" points="304.5,350.5 304.5,258.5 261.9,283.1 261.9,375.1" pathLength="1" style="animation-delay:1.3s"/>
-
-    <!-- узловые точки -->
-    <circle class="bp-dot" cx="279.65" cy="174.85" r="3.6" style="animation-delay:1.4s"/>
-    <circle class="bp-dot" cx="340" cy="330" r="3.6" style="animation-delay:1.5s"/>
-    <circle class="bp-dot" cx="524.6" cy="316.6" r="3.6" style="animation-delay:1.5s"/>
-  </svg>
-  <div class="hero-scan" aria-hidden="true"></div>
+  <!-- Сюда подставится твой схематичный макет крыши: положи файл в assets/hero-art.svg
+       (или .png — поменяй расширение в src). Пока файла нет — картинка скрывается. -->
+  <img class="hero-art" id="heroArt" src="assets/hero-art.svg" alt="" aria-hidden="true" onerror="this.style.display='none'">
   <div class="hero-slash"></div>
   <div class="hero-line"></div>
   <div class="hero-content">
@@ -1442,11 +1383,11 @@ mob.addEventListener('keydown', e => {
 
 // Hero parallax
 (function() {
-  const heroEl    = document.getElementById('hero');
-  const slash     = heroEl.querySelector('.hero-slash');
-  const line      = heroEl.querySelector('.hero-line');
-  const content   = heroEl.querySelector('.hero-content');
-  const blueprint = heroEl.querySelector('.hero-blueprint');
+  const heroEl  = document.getElementById('hero');
+  const slash   = heroEl.querySelector('.hero-slash');
+  const line    = heroEl.querySelector('.hero-line');
+  const content = heroEl.querySelector('.hero-content');
+  const art     = heroEl.querySelector('.hero-art');
   if (reduceMotion) return;
   let ticking = false;
   window.addEventListener('scroll', () => {
@@ -1458,7 +1399,7 @@ mob.addEventListener('keydown', e => {
         slash.style.transform   = `translateY(${y * 0.15}px)`;
         line.style.transform    = `translateY(${y * 0.4}px)`;
         content.style.transform = `translateY(${y * 0.25}px)`;
-        if (blueprint) blueprint.style.transform = `translateY(calc(-50% + ${y * 0.08}px))`;
+        if (art) art.style.transform = `translateY(calc(-50% + ${y * 0.08}px))`;
       }
       ticking = false;
     });
