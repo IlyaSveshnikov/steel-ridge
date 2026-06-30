@@ -472,7 +472,7 @@ textarea:focus-visible, select:focus-visible, .wc:focus-visible {
   position: absolute; right: 1%; top: 50%; transform: translateY(-50%);
   width: 54%; max-width: 800px; height: auto; z-index: 1; pointer-events: none; opacity: .92;
 }
-.hero-blueprint path, .hero-blueprint line, .hero-blueprint polyline {
+.hero-blueprint path, .hero-blueprint line, .hero-blueprint polyline, .hero-blueprint rect {
   fill: none; vector-effect: non-scaling-stroke;
 }
 .bp-line  { stroke: rgba(240,112,32,.6);  stroke-width: 1.6; stroke-linejoin: round; stroke-linecap: round;
@@ -725,32 +725,42 @@ input[type="range"].calc-range::-moz-range-thumb {
 <!-- ══════════ HERO ══════════ -->
 <section id="hero">
   <div class="hero-grid" aria-hidden="true"></div>
-  <svg class="hero-blueprint" viewBox="0 0 600 460" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-    <!-- основание / земля -->
-    <line class="bp-line" x1="40" y1="400" x2="560" y2="400" pathLength="1" style="animation-delay:0s"/>
+  <svg class="hero-blueprint" viewBox="0 0 640 480" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+    <!-- земля -->
+    <line class="bp-line" x1="80" y1="405" x2="560" y2="405" pathLength="1" style="animation-delay:0s"/>
     <!-- стены -->
-    <line class="bp-line" x1="120" y1="400" x2="120" y2="240" pathLength="1" style="animation-delay:.15s"/>
-    <line class="bp-line" x1="480" y1="400" x2="480" y2="240" pathLength="1" style="animation-delay:.15s"/>
-    <!-- затяжка (нижний пояс фермы) -->
-    <line class="bp-line" x1="120" y1="240" x2="480" y2="240" pathLength="1" style="animation-delay:.3s"/>
+    <line class="bp-line" x1="175" y1="405" x2="175" y2="250" pathLength="1" style="animation-delay:.18s"/>
+    <line class="bp-line" x1="465" y1="405" x2="465" y2="250" pathLength="1" style="animation-delay:.18s"/>
+    <!-- карнизная линия (верх стен) -->
+    <line class="bp-line" x1="140" y1="250" x2="500" y2="250" pathLength="1" style="animation-delay:.34s"/>
     <!-- скаты крыши со свесами -->
-    <polyline class="bp-line" points="90,240 300,80 510,240" pathLength="1" style="animation-delay:.45s"/>
-    <!-- кровельный слой (параллельно скатам) -->
-    <polyline class="bp-line" points="92,228 300,68 508,228" pathLength="1" style="animation-delay:.65s"/>
-    <!-- стропильная ферма (W) -->
-    <line class="bp-faint" x1="300" y1="80" x2="300" y2="240" pathLength="1" style="animation-delay:.85s"/>
-    <line class="bp-faint" x1="300" y1="150" x2="200" y2="240" pathLength="1" style="animation-delay:.95s"/>
-    <line class="bp-faint" x1="300" y1="150" x2="400" y2="240" pathLength="1" style="animation-delay:.95s"/>
-    <line class="bp-faint" x1="210" y1="165" x2="200" y2="240" pathLength="1" style="animation-delay:1.05s"/>
-    <line class="bp-faint" x1="390" y1="165" x2="400" y2="240" pathLength="1" style="animation-delay:1.05s"/>
+    <polyline class="bp-line" points="140,250 320,128 500,250" pathLength="1" style="animation-delay:.5s"/>
+    <!-- толщина кровли (внутренний контур) -->
+    <polyline class="bp-faint" points="162,250 320,142 478,250" pathLength="1" style="animation-delay:.72s"/>
+    <!-- дымоход -->
+    <polyline class="bp-faint" points="400,190 400,166 424,166 424,178" pathLength="1" style="animation-delay:.9s"/>
+    <!-- дверь -->
+    <polyline class="bp-faint" points="300,405 300,322 340,322 340,405" pathLength="1" style="animation-delay:1s"/>
+    <!-- окно слева -->
+    <rect class="bp-faint" x="208" y="300" width="44" height="44" pathLength="1" style="animation-delay:1.1s"/>
+    <line class="bp-faint" x1="230" y1="300" x2="230" y2="344" pathLength="1" style="animation-delay:1.2s"/>
+    <line class="bp-faint" x1="208" y1="322" x2="252" y2="322" pathLength="1" style="animation-delay:1.2s"/>
+    <!-- окно справа -->
+    <rect class="bp-faint" x="388" y="300" width="44" height="44" pathLength="1" style="animation-delay:1.1s"/>
+    <line class="bp-faint" x1="410" y1="300" x2="410" y2="344" pathLength="1" style="animation-delay:1.2s"/>
+    <line class="bp-faint" x1="388" y1="322" x2="432" y2="322" pathLength="1" style="animation-delay:1.2s"/>
     <!-- размерная линия пролёта -->
-    <line class="bp-dim" x1="120" y1="430" x2="480" y2="430"/>
-    <line class="bp-dim" x1="120" y1="400" x2="120" y2="438"/>
-    <line class="bp-dim" x1="480" y1="400" x2="480" y2="438"/>
+    <line class="bp-dim" x1="175" y1="448" x2="465" y2="448"/>
+    <line class="bp-dim" x1="175" y1="412" x2="175" y2="452"/>
+    <line class="bp-dim" x1="465" y1="412" x2="465" y2="452"/>
+    <!-- размерная линия высоты -->
+    <line class="bp-dim" x1="528" y1="250" x2="528" y2="405"/>
+    <line class="bp-dim" x1="472" y1="250" x2="534" y2="250"/>
+    <line class="bp-dim" x1="472" y1="405" x2="534" y2="405"/>
     <!-- узловые точки -->
-    <circle class="bp-dot" cx="300" cy="80" r="3.5" style="animation-delay:1.3s"/>
-    <circle class="bp-dot" cx="120" cy="240" r="3.5" style="animation-delay:1.4s"/>
-    <circle class="bp-dot" cx="480" cy="240" r="3.5" style="animation-delay:1.4s"/>
+    <circle class="bp-dot" cx="320" cy="128" r="3.5" style="animation-delay:1.35s"/>
+    <circle class="bp-dot" cx="140" cy="250" r="3.5" style="animation-delay:1.45s"/>
+    <circle class="bp-dot" cx="500" cy="250" r="3.5" style="animation-delay:1.45s"/>
   </svg>
   <div class="hero-scan" aria-hidden="true"></div>
   <div class="hero-slash"></div>
