@@ -1,84 +1,118 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 660 460" width="660" height="460" fill="none" role="img" aria-label="Детальный чертёж стропильной фермы крыши">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 470" width="720" height="470" fill="none" role="img" aria-label="Анимированный чертёж стропильной фермы крыши">
+  <defs>
+    <filter id="glow" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="2.4" result="b"/>
+      <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <linearGradient id="scanGrad" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#f5a623" stop-opacity="0"/>
+      <stop offset="0.5" stop-color="#ffcf85" stop-opacity="0.85"/>
+      <stop offset="1" stop-color="#f5a623" stop-opacity="0"/>
+    </linearGradient>
+  </defs>
+
   <style>
-    .l { fill:none; stroke:#f07020; stroke-width:2.6; stroke-linecap:round; stroke-linejoin:round; }
-    .f { fill:none; stroke:rgba(240,237,232,.34); stroke-width:1.7; stroke-linecap:round; stroke-linejoin:round; }
-    .t { fill:none; stroke:rgba(240,237,232,.3); stroke-width:1.3; stroke-linecap:round; }
-    .d { fill:none; stroke:rgba(240,112,32,.4); stroke-width:1.3; stroke-dasharray:6 5; }
-    .a { fill:none; stroke:rgba(245,166,35,.7); stroke-width:1.4; }
-    .n { fill:#f5a623; stroke:none; }
-    .draw { stroke-dasharray:1; stroke-dashoffset:1; animation:dr 1.4s ease forwards; }
-    .fade { opacity:0; animation:fd .7s ease forwards; }
-    @keyframes dr { to { stroke-dashoffset:0; } }
-    @keyframes fd { to { opacity:1; } }
+    .roof   { fill:none; stroke:#f07020; stroke-width:4.6; stroke-linecap:round; stroke-linejoin:round; filter:url(#glow); }
+    .beam   { fill:none; stroke:rgba(236,224,205,.5); stroke-width:3.6; stroke-linecap:round; stroke-linejoin:round; }
+    .batten { fill:none; stroke:rgba(236,224,205,.34); stroke-width:1.5; stroke-linecap:round; }
+    .dim    { fill:none; stroke:rgba(240,112,32,.42); stroke-width:1.3; stroke-dasharray:6 5; }
+    .tick   { fill:none; stroke:rgba(240,112,32,.55); stroke-width:1.3; }
+    .arc    { fill:none; stroke:rgba(245,166,35,.7); stroke-width:1.4; }
+    .node   { fill:#f5a623; }
+    .pulse  { fill:none; stroke:#ffe4b8; stroke-width:3.4; stroke-linecap:round; stroke-linejoin:round;
+              filter:url(#glow); stroke-dasharray:46 1000; }
+    .scan   { fill:url(#scanGrad); }
+
+    #art { opacity:0; animation:appear .9s ease .1s forwards; }
+    @keyframes appear { to { opacity:1; } }
+    .pulse.p1 { animation:flow 3.4s linear infinite; }
+    .pulse.p2 { animation:flow 3.4s linear infinite 1.7s; }
+    @keyframes flow { from { stroke-dashoffset:1046; } to { stroke-dashoffset:0; } }
+    .scan { animation:sweep 6.5s ease-in-out infinite; }
+    @keyframes sweep {
+      0%   { transform:translateX(40px);  opacity:0; }
+      12%  { opacity:.55; }
+      88%  { opacity:.55; }
+      100% { transform:translateX(600px); opacity:0; }
+    }
+    .node { animation:pulse 2.8s ease-in-out infinite; }
+    @keyframes pulse { 0%,100% { opacity:.6; } 50% { opacity:1; } }
+
     @media (prefers-reduced-motion: reduce) {
-      .draw { animation:none; stroke-dashoffset:0; }
-      .fade { animation:none; opacity:1; }
+      #art { animation:none; opacity:1; }
+      .pulse { display:none; }
+      .scan { display:none; }
+      .node { animation:none; opacity:.9; }
     }
   </style>
 
-  <!-- стены + мауэрлат -->
-  <g class="f draw" style="animation-delay:.85s">
-    <path d="M94 320 V352 M108 320 V352"/>
-    <path d="M552 320 V352 M566 320 V352"/>
-  </g>
+  <g id="art">
+    <!-- стены + мауэрлат -->
+    <path class="beam" d="M104 340 V376 M116 340 V376 M604 340 V376 M616 340 V376"/>
 
-  <!-- кровельное покрытие со свесами (контур крыши) -->
-  <polyline class="l draw" points="78,312 330,88 582,312" pathLength="1" style="animation-delay:.35s"/>
-  <!-- стропила (верхний пояс) -->
-  <line class="l draw" x1="100" y1="320" x2="330" y2="110" pathLength="1" style="animation-delay:.2s"/>
-  <line class="l draw" x1="560" y1="320" x2="330" y2="110" pathLength="1" style="animation-delay:.2s"/>
-  <!-- конёк -->
-  <line class="l draw" x1="318" y1="99" x2="342" y2="99" pathLength="1" style="animation-delay:.5s"/>
+    <!-- внутренняя ферма (брус) -->
+    <line class="beam" x1="110" y1="340" x2="610" y2="340"/>
+    <line class="beam" x1="360" y1="120" x2="360" y2="340"/>
+    <line class="beam" x1="235" y1="230" x2="235" y2="340"/>
+    <line class="beam" x1="485" y1="230" x2="485" y2="340"/>
+    <line class="beam" x1="360" y1="340" x2="235" y2="230"/>
+    <line class="beam" x1="360" y1="340" x2="485" y2="230"/>
+    <line class="beam" x1="257.7" y1="210" x2="462.3" y2="210"/>
 
-  <!-- затяжка (нижний пояс) -->
-  <line class="f draw" x1="100" y1="320" x2="560" y2="320" pathLength="1" style="animation-delay:0s"/>
-  <!-- бабка (king post) -->
-  <line class="f draw" x1="330" y1="110" x2="330" y2="320" pathLength="1" style="animation-delay:.5s"/>
-  <!-- подвески (queen posts) -->
-  <line class="f draw" x1="215" y1="215" x2="215" y2="320" pathLength="1" style="animation-delay:.6s"/>
-  <line class="f draw" x1="445" y1="215" x2="445" y2="320" pathLength="1" style="animation-delay:.6s"/>
-  <!-- подкосы -->
-  <line class="f draw" x1="330" y1="320" x2="215" y2="215" pathLength="1" style="animation-delay:.72s"/>
-  <line class="f draw" x1="330" y1="320" x2="445" y2="215" pathLength="1" style="animation-delay:.72s"/>
+    <!-- обрешётка -->
+    <g class="batten">
+      <line x1="136.2" y1="279.5" x2="145.4" y2="290.1"/>
+      <line x1="177.3" y1="244.1" x2="186.5" y2="254.7"/>
+      <line x1="218.4" y1="208.7" x2="227.6" y2="219.3"/>
+      <line x1="259.5" y1="173.3" x2="268.7" y2="183.9"/>
+      <line x1="300.6" y1="137.9" x2="309.8" y2="148.5"/>
+      <line x1="583.8" y1="279.5" x2="574.6" y2="290.1"/>
+      <line x1="542.7" y1="244.1" x2="533.5" y2="254.7"/>
+      <line x1="501.6" y1="208.7" x2="492.4" y2="219.3"/>
+      <line x1="460.5" y1="173.3" x2="451.3" y2="183.9"/>
+      <line x1="419.4" y1="137.9" x2="410.2" y2="148.5"/>
+    </g>
 
-  <!-- обрешётка (батенсы) на скатах -->
-  <g class="t fade" style="animation-delay:1s">
-    <line x1="149.6" y1="240.3" x2="157.6" y2="249.3"/>
-    <line x1="200"   y1="195.5" x2="208"   y2="204.5"/>
-    <line x1="250.4" y1="150.7" x2="258.4" y2="159.7"/>
-    <line x1="510.4" y1="240.3" x2="502.4" y2="249.3"/>
-    <line x1="460"   y1="195.5" x2="452"   y2="204.5"/>
-    <line x1="409.6" y1="150.7" x2="401.6" y2="159.7"/>
-  </g>
+    <!-- кровля + стропила (контур крыши) -->
+    <polyline class="roof" points="86,332 360,96 634,332"/>
+    <line class="roof" x1="110" y1="340" x2="360" y2="120"/>
+    <line class="roof" x1="610" y1="340" x2="360" y2="120"/>
+    <line class="roof" x1="344" y1="108" x2="376" y2="108"/>
 
-  <!-- отметка угла ската -->
-  <g class="a fade" style="animation-delay:1.1s">
-    <path d="M144 320 A44 44 0 0 0 132.5 290.3"/>
-  </g>
+    <!-- бегущие световые импульсы -->
+    <polyline class="pulse p1" points="86,332 360,96 634,332" pathLength="1000"/>
+    <polyline class="pulse p2" points="110,340 360,120 610,340" pathLength="1000"/>
 
-  <!-- размеры: пролёт и высота -->
-  <g class="d fade" style="animation-delay:1.15s">
-    <!-- пролёт -->
-    <line x1="100" y1="372" x2="560" y2="372"/>
-    <line x1="100" y1="356" x2="100" y2="380"/>
-    <line x1="560" y1="356" x2="560" y2="380"/>
-    <path d="M94 378 L106 366 M554 378 L566 366" style="stroke-dasharray:none"/>
-    <!-- высота -->
-    <line x1="610" y1="110" x2="610" y2="320"/>
-    <line x1="330" y1="110" x2="616" y2="110"/>
-    <line x1="560" y1="320" x2="616" y2="320"/>
-    <path d="M604 116 L616 104 M604 326 L616 314" style="stroke-dasharray:none"/>
-  </g>
+    <!-- отметка угла ската -->
+    <path class="arc" d="M160 340 A50 50 0 0 0 147.6 307"/>
 
-  <!-- узлы -->
-  <g class="fade" style="animation-delay:1.3s">
-    <circle class="n" cx="330" cy="110" r="3.6"/>
-    <circle class="n" cx="100" cy="320" r="3.6"/>
-    <circle class="n" cx="560" cy="320" r="3.6"/>
-    <circle class="n" cx="330" cy="320" r="3.2"/>
-    <circle class="n" cx="215" cy="215" r="3"/>
-    <circle class="n" cx="445" cy="215" r="3"/>
-    <circle class="n" cx="215" cy="320" r="3"/>
-    <circle class="n" cx="445" cy="320" r="3"/>
+    <!-- размеры: пролёт и высота -->
+    <g>
+      <line class="dim" x1="110" y1="396" x2="610" y2="396"/>
+      <line class="dim" x1="110" y1="380" x2="110" y2="404"/>
+      <line class="dim" x1="610" y1="380" x2="610" y2="404"/>
+      <path class="tick" d="M104 402 L116 390 M604 402 L616 390"/>
+      <line class="dim" x1="662" y1="120" x2="662" y2="340"/>
+      <line class="dim" x1="360" y1="120" x2="668" y2="120"/>
+      <line class="dim" x1="610" y1="340" x2="668" y2="340"/>
+      <path class="tick" d="M656 126 L668 114 M656 346 L668 334"/>
+    </g>
+
+    <!-- узлы -->
+    <g class="node">
+      <circle cx="360" cy="120" r="4"/>
+      <circle cx="110" cy="340" r="4"/>
+      <circle cx="610" cy="340" r="4"/>
+      <circle cx="360" cy="340" r="3.4"/>
+      <circle cx="235" cy="230" r="3.2"/>
+      <circle cx="485" cy="230" r="3.2"/>
+      <circle cx="235" cy="340" r="3.2"/>
+      <circle cx="485" cy="340" r="3.2"/>
+      <circle cx="257.7" cy="210" r="3"/>
+      <circle cx="462.3" cy="210" r="3"/>
+    </g>
+
+    <!-- sweep-линия -->
+    <rect class="scan" x="0" y="92" width="30" height="266"/>
   </g>
 </svg>
