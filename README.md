@@ -1,11 +1,11 @@
-# KroffGroup — лендинг кровельной компании
+# SteelRidge — лендинг кровельной компании
 
 Одностраничный сайт-лендинг для кровельной компании: монтаж кровли, изготовление доборных
 элементов, аренда строительных лесов и поставка материалов.
 
 🔗 **Живой сайт:** https://ilyasveshnikov.github.io/kroffgroup/
 
-![KroffGroup preview](assets/hero-poster.webp)
+![SteelRidge preview](assets/hero-poster.webp)
 
 ## Возможности
 
