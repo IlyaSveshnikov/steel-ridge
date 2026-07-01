@@ -3,9 +3,8 @@
 Одностраничный сайт-лендинг для кровельной компании: монтаж кровли, изготовление доборных
 элементов, аренда строительных лесов и поставка материалов.
 
-🔗 **Живой сайт:** https://ilyasveshnikov.github.io/kroffgroup/
+🔗 **Живой сайт:** https://ilyasveshnikov.github.io/steel-ridge/
 
-![SteelRidge preview](assets/hero-poster.webp)
 
 ## Возможности
 
