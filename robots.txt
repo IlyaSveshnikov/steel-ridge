@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://ilyasveshnikov.github.io/kroffgroup/sitemap.xml
+Sitemap: https://ilyasveshnikov.github.io/steel-ridge/sitemap.xml
