@@ -62,8 +62,13 @@ nav {
 .mobile-nav {
   display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
   background: #0f0f0f; z-index: 9998;
-  flex-direction: column; align-items: center; justify-content: center; gap: 2.5rem;
+  flex-direction: column; align-items: center;
+  gap: clamp(.85rem, 3.2vh, 2.5rem);
+  overflow-y: auto; padding: 4rem 1rem;
 }
+/* центрируем блок ссылок, но допускаем прокрутку, если пунктов больше, чем влезает */
+.mobile-nav a:first-child { margin-top: auto; }
+.mobile-nav a:last-child  { margin-bottom: auto; }
 .mobile-nav.open {
   display: flex;
   animation: navBgIn .3s ease forwards;
@@ -73,7 +78,7 @@ nav {
   to   { opacity: 1; }
 }
 .mobile-nav a {
-  font-family: var(--font-d); font-size: 2.4rem; letter-spacing: .06em;
+  font-family: var(--font-d); font-size: clamp(1.5rem, 4.8vh, 2.4rem); letter-spacing: .06em;
   color: var(--white); text-decoration: none;
   opacity: 0; transform: translateY(24px);
   animation: none;
@@ -87,6 +92,9 @@ nav {
 .mobile-nav.open a:nth-child(4) { animation-delay: .26s; }
 .mobile-nav.open a:nth-child(5) { animation-delay: .32s; }
 .mobile-nav.open a:nth-child(6) { animation-delay: .38s; }
+.mobile-nav.open a:nth-child(7) { animation-delay: .44s; }
+.mobile-nav.open a:nth-child(8) { animation-delay: .50s; }
+.mobile-nav.open a:nth-child(9) { animation-delay: .56s; }
 @keyframes navLinkIn {
   to { opacity: 1; transform: translateY(0); }
 }
@@ -617,4 +625,11 @@ input[type="range"].calc-range::-moz-range-thumb {
   .lb-prev { left: .5rem; } .lb-next { right: .5rem; }
   .lb-btn { width: 42px; height: 42px; }
   section { padding: 4rem 0; }
+  /* декоративные метки в hero пересекаются на узком экране — правую скрываем */
+  .hero-tag-r { display: none; }
+  /* калькулятор: длинные подписи не влезают в 2 колонки — стек в одну */
+  .seg-group.cols-2 { grid-template-columns: 1fr; }
+  .checks { grid-template-columns: 1fr; }
+  .calc-result { padding: 1.5rem; }
+  .calc-sum { font-size: 2.2rem; }
 }
